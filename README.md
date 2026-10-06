@@ -92,7 +92,7 @@ Market prices and VIX observations are downloaded from Yahoo Finance through `yf
 
 - Andrea Saliola Bucelli
 - Florian Säwert
-- Timo Baumgartner
+- [Timo Baumgartner](https://github.com/01baumgartner41-ux)
 
 ## License
 
