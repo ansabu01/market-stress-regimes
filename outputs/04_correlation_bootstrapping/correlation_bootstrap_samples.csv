@@ -1,0 +1,4 @@
+universe,n_assets,n_pairs,n_days,n_calm_days,n_stress_days,start_date,end_date
+panel_a_cross_asset,9,36,4711,2443,2268,2007-04-12,2025-12-30
+panel_b_international_equity,6,15,4711,2443,2268,2007-04-12,2025-12-30
+etf_assets,14,91,4711,2443,2268,2007-04-12,2025-12-30

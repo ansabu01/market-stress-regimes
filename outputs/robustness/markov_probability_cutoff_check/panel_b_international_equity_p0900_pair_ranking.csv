@@ -1,0 +1,16 @@
+label_source,cutoff,universe,method,asset_i,asset_j,corr_calm,corr_stress,delta_corr,interpretation
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EWU,EWJ,0.6042859296530522,0.8257123838741147,0.22142645422106255,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EWG,EWJ,0.6228379832919726,0.8242148994977658,0.20137691620579323,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,SPY,EWJ,0.6491155029091102,0.8407823027227392,0.191666799813629,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EEM,EWJ,0.6410025712725895,0.8246071704675164,0.1836045991949269,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,SPY,EWU,0.737516642450541,0.8792907942465507,0.1417741517960096,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EFA,EWJ,0.7824520302333132,0.9067317673145585,0.12427973708124529,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EEM,EWU,0.7411344765702351,0.8617175496375377,0.12058307306730254,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EEM,EWG,0.7339608684839597,0.8481422991861979,0.11418143070223818,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,SPY,EWG,0.7531632755707297,0.8666951051486135,0.11353182957788377,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,SPY,EEM,0.7508416553458234,0.8611516105247874,0.11030995517896403,Moderate breakdown
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,SPY,EFA,0.8207020439053451,0.9188580542747692,0.09815601036942412,Small increase
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EFA,EEM,0.8148153739024707,0.9054859699566503,0.0906705960541796,Small increase
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EWG,EWU,0.8146008347939199,0.9032009313471521,0.0886000965532322,Small increase
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EFA,EWU,0.8982929026666571,0.9524158030515433,0.05412290038488621,Small increase
+markov_regime_monthly.ms_prob_stress,0.9,panel_b_international_equity,pearson,EFA,EWG,0.9093566598031722,0.9517363040043744,0.042379644201202216,Small increase

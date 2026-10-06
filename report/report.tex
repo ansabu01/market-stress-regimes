@@ -1,0 +1,116 @@
+\documentclass[12pt,a4paper]{article}
+
+% =========================================================
+% Encoding and language
+% =========================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+
+% =========================================================
+% Page layout
+% =========================================================
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    margin=1in
+}
+
+% =========================================================
+% Spacing
+% =========================================================
+\usepackage{setspace}
+\onehalfspacing
+
+% =========================================================
+% Paragraph formatting
+% =========================================================
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+% =========================================================
+% Math, tables, figures
+% =========================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% All figures are looked up here, in order, regardless of which
+% sections/*.tex file includes them. Add more folders as needed.
+\graphicspath{{../outputs/02_regimes/}{../outputs/01_descriptive_data/}{../outputs/05_pca/}{../outputs/03_correlation_raw/}{../outputs/04_correlation_bootstrapping/}{../outputs/06_adjusted_correlation/}}
+
+% =========================================================
+% Colors and links
+% =========================================================
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue
+}
+
+% =========================================================
+% References
+% =========================================================
+\usepackage[round]{natbib}
+
+% =========================================================
+% Document metadata
+% =========================================================
+\title{Safe Until It Isn't: Correlation Spikes, Portfolio Fragility, and True Diversification}
+\author{Andrea Saliola Bucelli \and Florian \and Timo}
+\date{\today}
+
+% =========================================================
+% Document
+% =========================================================
+\begin{document}
+
+% ---------------------------------------------------------
+% Front matter
+% ---------------------------------------------------------
+\input{frontmatter/titlepage}
+
+\input{frontmatter/abstract}
+
+% ---------------------------------------------------------
+% Table of contents
+% ---------------------------------------------------------
+\tableofcontents
+\newpage
+
+% ---------------------------------------------------------
+% Main sections
+% ---------------------------------------------------------
+\input{sections/01_introduction}
+\input{sections/02_Literature_and_previous_research}
+\input{sections/03_data}
+\input{sections/04_methodology}
+\input{sections/05_results}
+\input{sections/06_discussion}
+\input{sections/07_conclusion}
+
+% ---------------------------------------------------------
+% References
+% ---------------------------------------------------------
+\newpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% ---------------------------------------------------------
+% Appendix
+% ---------------------------------------------------------
+\newpage
+\appendix
+\input{sections/appendix}
+
+\end{document}

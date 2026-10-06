@@ -1,0 +1,3 @@
+markov_label,common_weeks,agreement_rate,cohen_kappa,weekly_stress_share,monthly_stress_share
+ms_stress_50,1353,0.7539,0.4942,0.2587,0.4723
+ms_stress_75,1353,0.7701,0.4774,0.2062,0.3976

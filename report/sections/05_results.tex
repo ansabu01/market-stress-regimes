@@ -1,0 +1,185 @@
+% !TEX root = ../report.tex
+
+\section{Results}
+\label{sec:results}
+
+This section presents the empirical results in the order the methodology builds them. We begin with the regime-conditional correlations themselves---the comovement a portfolio holder actually experienced in each state (Section~\ref{subsec:results_raw_corr})---and then establish which of the observed changes survive sampling uncertainty using the block bootstrap of Section~\ref{subsec:bootstrap_inference} (Section~\ref{subsec:results_bootstrap}). We move from pairs to portfolios with the principal-component concentration (Section~\ref{subsec:results_pca}) and finally ask whether the raw increases survive the Forbes--Rigobon variance adjustment (Section~\ref{subsec:results_forbes_rigobon}).
+
+\subsection{Regime-Conditional Correlations}
+\label{subsec:results_raw_corr}
+
+The regime-conditional correlations already tell two different stories about the two universes, and a third---more subtle---about their combination. Table~\ref{tab:corr_summary} reports the panel-level summaries on the common balanced window, and Figure~\ref{fig:delta_corr_dist} shows the full distribution of the pairwise stress-minus-calm change $\Delta\rho_{ij}$ of Equation~\eqref{eq:corr_delta}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{delta_corr_distribution.png}
+\caption{Distribution of pairwise stress-minus-calm correlation changes $\Delta\rho_{ij}$ (Equation~\eqref{eq:corr_delta}), with kernel-density overlays for the cross-asset (Panel~A) and international-equity (Panel~B) universes; each observation is one asset pair and the dashed vertical line marks $\Delta\rho = 0$. Panel~B lies entirely to the right of zero---every pair tightens in stress---whereas Panel~A is centred slightly to the \emph{left} of zero, reflecting the reshuffle in which risk-on pairs tighten while safe-haven pairs decouple.}
+\label{fig:delta_corr_dist}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Regime-conditional correlation summary by universe, on the common balanced window. $\overline{\rho}^{\,\mathrm{calm}}$ and $\overline{\rho}^{\,\mathrm{stress}}$ are the mean pairwise Pearson correlations (Equation~\eqref{eq:regime_corr}) in each regime; $\overline{\Delta\rho}$ and the median summarize the stress-minus-calm change (Equation~\eqref{eq:corr_delta}). The last three columns give the share of pairs that are \emph{resilient} ($\Delta\rho < 0$), a \emph{small increase} ($0 \le \Delta\rho < 0.10$), or a raw \emph{breakdown} ($\Delta\rho \ge 0.10$).}
+\label{tab:corr_summary}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccc}
+\toprule
+ & & & \multicolumn{2}{c}{Mean $\rho$} & \multicolumn{2}{c}{$\Delta\rho$} & \multicolumn{3}{c}{Pair shares} \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-10}
+Universe & $N$ & Pairs & Calm & Stress & Mean & Median & Resilient & Small $\uparrow$ & Breakdown \\
+\midrule
+Panel A: cross-asset          & $9$  & $36$ & $0.195$ & $0.170$ & $-0.025$ & $-0.024$ & $61.1\%$ & $25.0\%$ & $13.9\%$ \\
+Panel B: international equity  & $6$  & $15$ & $0.741$ & $0.866$ & $+0.124$ & $+0.125$ & $0.0\%$  & $26.7\%$ & $73.3\%$ \\
+Combined ETF universe         & $14$ & $91$ & $0.282$ & $0.311$ & $+0.029$ & $+0.050$ & $41.8\%$ & $24.2\%$ & $34.1\%$ \\
+\bottomrule
+\end{tabular}%
+}
+\\[0.4em]
+{\footnotesize Common balanced return window 12 April 2007--30 December 2025: $2{,}443$ calm and $2{,}268$ stress trading days ($48.1\%$ stress). The breakdown class ($\Delta\rho \ge 0.10$) is later split into robust and volatility-bias-sensitive by the Forbes--Rigobon adjustment (Section~\ref{subsec:results_forbes_rigobon}); the per-universe class counts are reported in Appendix Table~\ref{tab:interp_classes_app}.}
+\end{table}
+
+\paragraph{Panel B: international equity.} The international-equity panel shifts upward as a whole. The average pairwise correlation rises from $0.74$ in calm to $0.87$ in stress, and \emph{every one of the fifteen pairs} co-moves more tightly, so the distribution in Figure~\ref{fig:delta_corr_dist} lies entirely to the right of zero. The tightening is led by the Japan pairs---EEM--EWJ ($+0.21$), EWU--EWJ ($+0.19$), and EWG--EWJ ($+0.18$)---while the already near-collinear developed-market pairs EFA--EWG and EFA--EWU, both around $0.91$ in calm, have little room left to rise (about $+0.04$). Nearly three-quarters of the pairs cross the $0.10$ raw-breakdown threshold and none falls.
+
+\paragraph{Panel A: cross-asset.} The cross-asset panel is the more revealing case, because its average barely moves---if anything it falls, from $0.19$ to $0.17$ ($\overline{\Delta\rho} = -0.025$)---yet this flat average conceals a reshuffle. The risk-on complex tightens: SPY--VNQ rises by $0.21$, DBC--VNQ and USO--VNQ by about $0.23$, and SPY--USO and SPY--DBC by about $0.17$. At the same time the safe-haven sleeve decouples further, and the largest moves in the whole panel are \emph{decreases}: TLT--VNQ falls by $0.37$, SHY--VNQ by $0.31$, AGG--VNQ by $0.28$, and the bond--bond pairs TLT--AGG and SHY--AGG by about $0.23$ and $0.21$ as duration and credit risk separate. Consistent with this split, $61.1\%$ of the thirty-six pairs see their correlation \emph{fall} in stress (the \emph{resilient (decreased)} class of Section~\ref{subsec:fragility_taxonomy}), only one pair in seven crosses the $0.10$ breakdown threshold, and the distribution in Figure~\ref{fig:delta_corr_dist} is centred slightly to the left of zero---the opposite of the textbook breakdown.
+
+The combined fourteen-asset universe sits between the two: the average correlation rises modestly from $0.28$ to $0.31$ ($\overline{\Delta\rho} = +0.029$), and the distribution is near-symmetric about zero, with $34.1\%$ of the ninety-one pairs above the breakdown threshold and $41.8\%$ falling. Its largest increases mix the real-estate--equity and real-estate--commodity pairs that bridge the two panels---VNQ--EWU ($+0.23$), DBC--VNQ and USO--VNQ (about $+0.23$), and VNQ--EEM and VNQ--EWG (about $+0.22$)---while its largest decreases are exactly the cross-asset hedges of Panel~A (TLT--VNQ $-0.37$, SHY--VNQ $-0.31$). The full pair rankings for all three universes, together with the regime-conditional heatmaps and calm-versus-stress scatter plots, are reported in Appendix~\ref{app:raw_corr} (Tables~\ref{tab:raw_pairs_app}--\ref{tab:interp_classes_app} and Figures~\ref{fig:corr_heatmaps_app}--\ref{fig:corr_scatter_app}).
+
+A descriptive stress-episode split adds one qualification to these pooled estimates. Appendix Table~\ref{tab:stress_episode_hedges} recomputes selected hedge correlations on Markov-stress days only, separately for the 2007--2019, 2020--2021, and 2022--2023 episodes within the same balanced window. The hedge correlations are not constant across stress types: SPY--TLT is strongly negative in the earlier episodes ($-0.48$ in 2007--2019 stress, $-0.45$ in 2020--2021 stress) but turns mildly positive ($+0.10$) in the inflation- and rate-driven 2022--2023 episode, and the same reversal runs through the duration sleeve (TLT--VNQ moves from $-0.35$ to $+0.27$; TLT--AGG rises from $0.51$ to $0.91$). Gold is the exception: SPY--GLD stays within $[+0.01, +0.15]$ in every episode. Because the 2007--2019 and 2020--2021 episodes supply roughly three-quarters of the stress days, the pooled Treasury-hedge estimate is dominated by these earlier, deflationary-type episodes---consistent with the macro-finance evidence that the sign of stock--bond comovement depends on whether real or inflationary shocks drive the downturn \citep{campbell2020macro}. This does not overturn the pooled Panel~A result; it clarifies its interpretation: the Markov label identifies \emph{when} markets are stressed, not \emph{which} macroeconomic shock generates the stress, so the resilience of sovereign duration is best read as an average stress-regime property rather than an unconditional hedge guarantee. The split is descriptive and is not used for formal inference.
+
+These raw labels are descriptive thresholds on the point estimates; before reading economic content into any single pair, we ask which of the changes survive sampling uncertainty.
+
+\subsection{Statistical Significance of the Correlation Changes}
+\label{subsec:results_bootstrap}
+
+To separate signal from sampling noise we apply the circular block bootstrap of Section~\ref{subsec:bootstrap_inference} ($B = 2{,}000$ replicates, block length $L = 21$ days) to every pairwise change and to the panel averages. Table~\ref{tab:bootstrap_summary} reports the universe-level results.
+
+\begin{table}[htbp]
+\centering
+\caption{Block-bootstrap significance of the regime-conditional correlation changes. $\overline{\Delta\rho}$ is the average stress-minus-calm pairwise change; the $95\%$ confidence interval and two-sided $p$-value (Equation~\eqref{eq:boot_pvalue}) come from $B = 2{,}000$ circular moving-block bootstrap replicates with block length $L = 21$ days. ``Sig.\ $\uparrow$'' and ``Sig.\ $\downarrow$'' count pairs whose $95\%$ interval lies entirely above or below zero; ``FDR'' counts pairs significant after the per-universe Benjamini--Hochberg correction at $q < 0.05$.}
+\label{tab:bootstrap_summary}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Universe & Pairs & $\overline{\Delta\rho}$ & $95\%$ CI & $p_{\mathrm{boot}}$ & Sig.\ $\uparrow$ & Sig.\ $\downarrow$ & FDR \\
+\midrule
+Panel A: cross-asset          & $36$ & $-0.025$ & $[-0.066,\,+0.019]$ & $0.267$    & $6$  & $8$  & $11$ \\
+Panel B: international equity  & $15$ & $+0.124$ & $[+0.084,\,+0.157]$ & $<0.001$   & $15$ & $0$  & $15$ \\
+Combined ETF universe         & $91$ & $+0.029$ & $[-0.012,\,+0.068]$ & $0.158$    & $35$ & $16$ & $50$ \\
+\bottomrule
+\end{tabular}%
+}
+\\[0.4em]
+{\footnotesize The bootstrap resamples chronological blocks of whole cross-sectional rows together with their regime labels (random seed $20250624$); significance is conditional on the estimated Markov labels (Section~\ref{subsec:bootstrap_inference}). The smallest attainable centered-bootstrap $p$-value is $1/(B+1) \approx 0.0005$.}
+\end{table}
+
+The panel averages confirm only one of the three stories outright. The international-equity average is the sole universe whose mean change is unambiguously positive: $\overline{\Delta\rho} = +0.124$, with a $95\%$ confidence interval of $[+0.084, +0.157]$ that excludes zero, a bootstrap $p$-value at the resolution floor ($p < 0.001$), and \emph{all fifteen pairs} significant after the Benjamini--Hochberg correction. By contrast, the cross-asset and combined averages are \emph{not} distinguishable from zero: their intervals straddle zero ($[-0.066, +0.019]$ and $[-0.012, +0.068]$) with bootstrap $p$-values of $0.27$ and $0.16$.
+
+A null average, however, is not the absence of an effect---it is the cancellation of offsetting ones. The cross-asset panel illustrates this directly: although its \emph{average} change is indistinguishable from zero, six pairs are significant increases and eight are significant decreases at the $95\%$ level, and eleven survive the FDR correction. The significant increases are the risk-on real-estate pairs (SPY--VNQ, DBC--VNQ, USO--VNQ) and the significant decreases are the safe-haven pairs (TLT--VNQ, SHY--VNQ, AGG--VNQ, TLT--AGG, SHY--AGG); the panel average is flat precisely because these move in opposite directions. The reshuffle described in Section~\ref{subsec:results_raw_corr} is therefore statistically real even though the headline average is not. In the combined universe the same logic produces $35$ significant increases against $16$ decreases, $50$ of which survive the FDR control.
+
+These counts are markedly smaller than a naive analysis would suggest, and the gap is itself a result. The classical Fisher-$z$ test, which assumes i.i.d.\ Gaussian returns, flags $73$ of the $91$ combined pairs as significant; the block bootstrap, which respects the serial dependence of daily returns, retains only $50$ after FDR control (Appendix Table~\ref{tab:fisher_compare_app}). Every pair the bootstrap declares significant is also significant under Fisher-$z$, but $23$ pairs are significant under Fisher-$z$ alone---almost a third of its discoveries overturned by the more honest variance estimate. One pair makes the point concrete: SPY--AGG has $\Delta\rho = +0.08$ with a Fisher-$z$ $p$-value of $0.008$, yet a bootstrap $95\%$ interval of $[-0.076, +0.201]$ and $p = 0.27$. The classical test treats $4{,}711$ serially correlated, heteroskedastic days as independent observations and so overstates the effective sample size; the block bootstrap does not, and we read its more conservative verdict as the credible one.
+
+Three caveats temper even this conservative reading, and all point the same way---towards \emph{wider} uncertainty than reported. First, the bootstrap is conditional on the estimated Markov regime labels: it does not propagate the uncertainty in \emph{which} days are stress, so a pair's interval understates total uncertainty whenever the regime classification is itself in doubt. Second, the per-universe FDR families overlap---the combined universe reuses every pair from Panels~A and B---so the significance counts across the three universes are not independent discoveries. Third, with $B=2{,}000$ the centered-bootstrap $p$-value cannot fall below $1/(B+1) \approx 0.0005$, so values at that floor are right-censored: the procedure cannot rank degrees of significance among the most extreme pairs. None of these changes the qualitative conclusion, but each argues against over-interpreting a borderline pair.
+
+The conclusions are not an artifact of the $21$-day block length. Re-running the bootstrap with $L \in \{5, 21, 63\}$ leaves the point estimates unchanged and keeps the international-equity average significant at every block length, while the confidence intervals widen as the block lengthens---the expected consequence of acknowledging more serial dependence (Appendix~\ref{app:bootstrap}, Figure~\ref{fig:block_sensitivity_app} and Table~\ref{tab:block_sensitivity_app}). The pair-level bootstrap distributions and the full set of pairwise intervals for the top and tail pairs are reported there as well (Figures~\ref{fig:bootstrap_dist_app}--\ref{fig:pairwise_ci_app} and Table~\ref{tab:bootstrap_pairs_app}). Having established which correlations move and which of those moves are statistically real, we now ask what they imply for a portfolio as a whole.
+
+\subsection{Principal-Component Concentration}
+\label{subsec:results_pca}
+
+We summarize each panel by the share of variance captured by the leading component, $\mathrm{pc1\_share}$ (Equation~\eqref{eq:pc_shares}), and the effective number of bets, $N_{\mathrm{eff}}$ (Equation~\eqref{eq:effective_bets}). A panel is judged \emph{more concentrated in stress} when the leading factor grows and the effective number of bets shrinks at the same time. Table~\ref{tab:pca_concentration} and Figure~\ref{fig:pca_concentration} report the comparison, and the verdict is unanimous: in all three universes $\mathrm{pc1\_share}$ rises and $N_{\mathrm{eff}}$ falls from calm to stress. The two measures are different summaries of the same eigenvalue spectrum and move together almost by construction, so they are best read as one concentration finding rather than two independent confirmations; what the comparison establishes is its sign and that it holds in every universe. A rising leading-component share is precisely the signature that the systemic-risk literature reads as fragility---the ``absorption ratio'' of \citet{kritzman2011principal}, who show that a larger fraction of total variance loading on a few components coincides with market turbulence and predicts drawdowns, and the principal-component connectedness of \citet{billio2012econometric}, which tightens in crises. Our regime-conditional estimates make the same point in the cross-section: precisely when stress arrives, returns collapse onto fewer independent directions, so the realized diversification of a portfolio weakens even where no single pairwise correlation looks alarming.
+
+\begin{table}[htbp]
+\centering
+\caption{Principal-component concentration by regime. $\mathrm{pc1\_share}$ is the share of total variance explained by the leading eigenvector of the regime-conditional correlation matrix (Equation~\eqref{eq:pc_shares}); $N_{\mathrm{eff}}$ is the effective number of bets (Equation~\eqref{eq:effective_bets}), which ranges from $1$ (a single common factor) to $N$ (equal, independent directions). Every panel is \emph{more concentrated in stress}: the leading factor grows and the effective number of bets shrinks simultaneously.}
+\label{tab:pca_concentration}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccccc}
+\toprule
+ & & \multicolumn{3}{c}{$\mathrm{pc1\_share}$} & \multicolumn{3}{c}{$N_{\mathrm{eff}}$} & \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+Universe & $N$ & Calm & Stress & $\Delta$ & Calm & Stress & $\Delta$ & Verdict \\
+\midrule
+Panel A: cross-asset          & $9$  & $0.308$ & $0.374$ & $+0.065$ & $4.52$ & $4.33$ & $-0.20$ & concentrates \\
+Panel B: international equity  & $6$  & $0.787$ & $0.889$ & $+0.101$ & $1.58$ & $1.26$ & $-0.32$ & concentrates \\
+Combined ETF universe         & $14$ & $0.427$ & $0.519$ & $+0.092$ & $4.11$ & $3.21$ & $-0.90$ & concentrates \\
+\bottomrule
+\end{tabular}%
+}
+\\[0.4em]
+{\footnotesize Eigendecomposition of the raw (unadjusted) regime-conditional correlation matrix of Equation~\eqref{eq:regime_corr}, computed on the common balanced return panel (12 April 2007 onward, one trading day after the last asset's first price), so all three universes share the same $2{,}443$ calm / $2{,}268$ stress trading days ($48.1\%$ stress). Panel B's full 2003--2025 sample yields the same verdict and is reported in Appendix Table~\ref{tab:pca_panelb_robustness}.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{pc1_share_calm_vs_stress.png}
+  \caption{Leading-component share $\mathrm{pc1\_share}$.}
+  \label{fig:pca_pc1}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.49\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{effective_bets_calm_vs_stress.png}
+  \caption{Effective number of bets $N_{\mathrm{eff}}$.}
+  \label{fig:pca_neff}
+\end{subfigure}
+\caption{Portfolio concentration by regime. In every universe the leading component absorbs a larger share of variance in stress (panel a) while the effective number of independent bets falls (panel b)---the two halves of the concentration verdict. The joint $(\Delta\,\mathrm{pc1\_share},\,\Delta N_{\mathrm{eff}})$ scatter is reported in Figure~\ref{fig:pca_quadrant}.}
+\label{fig:pca_concentration}
+\end{figure}
+
+\paragraph{Panel A: cross-asset.} The cross-asset universe is the more revealing case, because its diversification erodes at the portfolio level even though its average pairwise correlation does not rise. The leading component climbs from $\mathrm{pc1\_share}^{\mathrm{calm}} = 0.308$ to $\mathrm{pc1\_share}^{\mathrm{stress}} = 0.374$, while the effective number of bets falls from $N_{\mathrm{eff}}^{\mathrm{calm}} = 4.52$ to $N_{\mathrm{eff}}^{\mathrm{stress}} = 4.33$. In calm the panel is organized around two comparable factors---$\mathrm{pc1\_share}$ and the second-component share are almost equal ($0.308$ versus $0.290$)---which is the eigenvalue signature of a portfolio that genuinely runs a risk axis and a separate rates axis side by side. In stress the leading axis pulls away ($0.374$ versus a second-component share of $0.239$), yet the top-three and top-five cumulative shares are essentially unchanged ($\approx 0.76$ and $\approx 0.89$): the concentration is a reallocation of variance \emph{from} the second component \emph{into} the first, not an increase in the total explained by the leading components. This is exactly what the pairwise reshuffle implies. The risk-on block converges onto a single direction---SPY--VNQ, SPY--DBC, and SPY--USO all rise by $0.17$--$0.21$, and the commodity--real-estate pairs DBC--VNQ and USO--VNQ rise by about $0.23$---while the safe block moves more sharply against it, with SPY--TLT, TLT--AGG, and TLT--VNQ all falling (the \emph{resilient (decreased)} class of Section~\ref{subsec:fragility_taxonomy}). Both movements load onto the same leading risk-on/risk-off eigenvector, which is why $\mathrm{pc1\_share}$ rises while the average correlation stays flat. The practical reading is that the cross-asset portfolio retains its hedges---Treasuries and gold still diversify, and indeed diversify better in stress---but loses roughly one-fifth of an independent bet as the remaining risk assets begin to move as one.
+
+\paragraph{Panel B: international equity.} The international-equity panel shows the textbook breakdown at the portfolio level, matching its pairwise behavior. It is already close to a single-factor system in calm, with $\mathrm{pc1\_share}^{\mathrm{calm}} = 0.787$ and only $N_{\mathrm{eff}}^{\mathrm{calm}} = 1.58$ effective bets across six markets, and it becomes nearly degenerate in stress: $\mathrm{pc1\_share}^{\mathrm{stress}} = 0.889$ and $N_{\mathrm{eff}}^{\mathrm{stress}} = 1.26$, barely more than one independent direction, with the second-component share roughly halving from $0.077$ to $0.039$. This is the eigenvalue counterpart of a uniform pairwise tightening in which all fifteen pairs rise: the increase is led by the Japan pairs (EEM--EWJ by $0.21$, EWU--EWJ by $0.19$, EWG--EWJ by $0.18$, SPY--EWJ by $0.16$), while the already tight developed-market pairs EFA--EWG and EFA--EWU remain near $0.95$ (rising by only about $0.04$). The common global-equity factor that dominates in calm becomes very nearly the only factor in stress, so the diversification benefit of holding geographically distinct equity markets---the variance \emph{not} explained by the common component---all but disappears. This is the cross-sectional, regime-conditional analogue of the rising global-market integration documented by \citet{pukthuanthong2009global}, and of the extreme-downturn correlations of \citet{longin2001extreme}: international equity diversification is weakest exactly in the states where it is most needed. The verdict is unchanged on Panel B's full 2003--2025 sample (Appendix Table~\ref{tab:pca_panelb_robustness}), which the body shortens to the common window only for comparability with the other panels.
+
+The combined fourteen-asset universe sits between the two by construction, but records the largest absolute loss of independent bets: $\mathrm{pc1\_share}$ rises from $0.427$ to $0.519$ and $N_{\mathrm{eff}}$ falls from $4.11$ to $3.21$, a drop of nearly a full bet, as the international-equity block drags the leading component upward. Across all three universes the joint verdict holds---$\mathrm{pc1\_share}$ up and $N_{\mathrm{eff}}$ down (Figure~\ref{fig:pca_quadrant})---so the portfolio-level concentration is not an artifact of a single asset mix. Read together with the pairwise fragility taxonomy of Section~\ref{subsec:fragility_taxonomy}, this establishes that the realized loss of diversification in stress operates at the level of the whole raw correlation matrix. The Forbes--Rigobon adjustment below asks whether the raw pairwise increases that feed this concentration survive a stricter variance correction.
+
+\subsection{Forbes--Rigobon Adjustment}
+\label{subsec:results_forbes_rigobon}
+
+The PCA results describe the realized stress-period concentration of the full correlation matrix. The Forbes--Rigobon adjustment asks a deliberately narrower question. It does \emph{not} dispute that diversification weakens in stress---the raw correlations are the comovement an investor actually holds, and they rise---but asks \emph{why}: did the dependence relationship itself change (\emph{contagion}: a structural shift in factor loadings or genuinely new linkages), or did the measured correlation rise mechanically because the common factor became more volatile while the underlying relationship was unchanged (\emph{interdependence})? \citet{forbesrigobon2002} show that the second channel alone inflates a correlation even when the linear relation is fixed. This warning is especially relevant here because the regimes are deliberately sorted by volatility: \citet{boyer1999pitfalls} show that volatility-conditioned subsamples can display different correlations even when the underlying dependence is constant. A verdict of ``no structural change'' is therefore not a verdict that diversification held: it locates the \emph{source} of the breakdown in volatility rather than in a regime shift of the dependence structure, and leaves the investor's experienced diversification exactly as the raw correlations describe it. Read this way the adjustment complements, rather than overturns, the PCA result.
+
+The cleanest benchmark is the \texttt{market\_spy} specification, because it treats SPY as the common market-shock source. In the common estimation window, SPY's stress variance is about $3.97$ times its calm variance, so the shock used in the adjustment is $\delta_{\mathrm{SPY}} = 2.97$. Figure~\ref{fig:fr_survival} shows the combined ETF universe pair by pair. Each circle is the raw stress-minus-calm correlation change and each diamond is the same change after the Forbes--Rigobon correction. The pattern is stark: all raw SPY-pair increases that exceed the $0.10$ breakdown threshold fall back below it after adjustment. Among the thirteen SPY pairs, seven are classified as volatility-bias-sensitive increases, three as mostly resilient, three as resilient decreases, and none as robust breakdowns. The largest raw increases therefore describe comovement investors actually experienced in stress, but they do not survive as adjusted correlation increases under the SPY market-shock benchmark.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{forbes_rigobon_breakdown_survival.png}
+\caption{Forbes--Rigobon pair-level survival for the combined ETF universe under the \texttt{market\_spy} specification. Circles show raw stress-minus-calm correlation changes and diamonds show the adjusted changes after deflating stress correlations by the SPY variance shock. The dotted vertical line marks the $0.10$ breakdown threshold. Raw SPY-linked increases that cross the threshold move back below it after correction, so they are volatility-bias-sensitive rather than robust Forbes--Rigobon breakdowns.}
+\label{fig:fr_survival}
+\end{figure}
+
+Table~\ref{tab:fr_classification} summarizes the classification across both universes and both adjustment methods. The headline is uniform: \emph{no pair, in any universe or under either method, is a robust breakdown}. The average raw change is positive (or near zero) everywhere but turns negative once adjusted, and the increases that exist in raw space are reclassified as volatility-bias-sensitive---volatility-driven interdependence rather than structural contagion. As the next paragraph shows, the four classes are not spread evenly across the panels: the volatility-bias-sensitive increases are concentrated in international equity, while the cross-asset panel is dominated by genuinely resilient pairs.
+
+\begin{table}[htbp]
+\centering
+\caption{Forbes--Rigobon pair classification by universe and adjustment method, on the common balanced window. \texttt{market\_spy} adjusts SPY pairs by the SPY variance shock; \texttt{pair\_max} adjusts every pair by the larger of its two asset shocks. ``Robust'' / ``Vol.-sens.'' / ``Resilient'' / ``Mostly res.'' are the four classes of Section~\ref{subsec:fragility_taxonomy}; $\overline{\Delta\rho}$ and $\overline{\tilde\Delta\rho}$ are the average raw and adjusted stress-minus-calm changes.}
+\label{tab:fr_classification}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Universe & Method & Pairs & Robust & Vol.-sens. & Resilient & Mostly res. & $\overline{\Delta\rho}$ & $\overline{\tilde\Delta\rho}$ \\
+\midrule
+Panel A: cross-asset         & \texttt{market\_spy} & $8$  & $0$ & $3$  & $3$  & $2$  & $+0.055$ & $-0.026$ \\
+Panel A: cross-asset         & \texttt{pair\_max}   & $36$ & $0$ & $5$  & $22$ & $9$  & $-0.025$ & $-0.097$ \\
+Panel B: international equity & \texttt{market\_spy} & $5$  & $0$ & $4$  & $0$  & $1$  & $+0.131$ & $-0.079$ \\
+Panel B: international equity & \texttt{pair\_max}   & $15$ & $0$ & $11$ & $0$  & $4$  & $+0.124$ & $-0.068$ \\
+Combined ETF                 & \texttt{market\_spy} & $13$ & $0$ & $7$  & $3$  & $3$  & $+0.084$ & $-0.046$ \\
+Combined ETF                 & \texttt{pair\_max}   & $91$ & $0$ & $31$ & $38$ & $22$ & $+0.029$ & $-0.080$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+The SPY benchmark is methodologically clean but narrow: it asks only whether assets become more correlated with the U.S. equity market. The broader and more revealing evidence comes from the conservative \texttt{pair\_max} variant restricted to the \emph{non}-SPY pairs, which deflates every pair by the larger of its two assets' variance shocks---the most demanding correction available---and is plotted panel by panel in Figure~\ref{fig:fr_nonspy}. It is here that the two panels separate most sharply, and the separation is the central diversification result.
+
+In the cross-asset panel the finding is genuine resilience, not merely the absence of contagion. Of the twenty-eight non-SPY pairs, nineteen are \emph{resilient}---their correlation \emph{decreased} in stress---and only two are volatility-bias-sensitive. The diversifiers that matter, Treasuries (SHY, TLT, AGG) and gold paired against the risk assets, co-move \emph{less} in stress even before any adjustment, so they keep diversifying precisely when it is needed; the conservative variance shock only deepens the point. The international-equity panel is the mirror image: \emph{none} of its ten non-SPY pairs is resilient, seven are volatility-bias-sensitive, and the remainder are small increases. Geographic equity diversification therefore produces only the interdependence kind of comovement increase---real for the holder but driven by shared volatility---whereas cross-asset diversification is structurally intact and, for the safe-haven sleeves, actively improves under stress.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{forbes_rigobon_pair_max_non_spy_raw_vs_adjusted.png}
+\caption{Conservative \texttt{pair\_max} Forbes--Rigobon adjustment for the non-SPY pairs, by panel. Each point is one pair: the horizontal axis is the raw stress-minus-calm correlation change and the vertical axis the change after deflating by the larger of the two assets' variance shocks, so points below the $45^{\circ}$ line were reduced by the correction. Green points are \emph{resilient} pairs whose correlation \emph{decreased} in stress; orange points are volatility-bias-sensitive increases. The cross-asset panel (left) is dominated by green---Treasuries and gold diversify better in stress---while the international-equity panel (centre) contains no green points at all.}
+\label{fig:fr_nonspy}
+\end{figure}
+
+Across the combined fourteen-asset universe the same split holds: of the ninety-one pairs none is a robust breakdown, thirty-one are volatility-bias-sensitive (concentrated in the equity block) and thirty-eight are resilient decreases (the cross-asset diversifiers), so the average raw change of $+0.029$ becomes an adjusted $-0.080$. The correct reading is therefore not that ``the breakdown is not real''---the raw correlations are what an investor experiences---but that the breakdown is \emph{volatility-driven interdependence concentrated in equities}, while the cross-asset hedges genuinely strengthen as diversifiers under stress.
+
+Taken together, the PCA and Forbes--Rigobon evidence sharpen rather than soften the main result. PCA shows that realized diversification concentrates in stress; Forbes--Rigobon shows that this concentration is volatility-driven interdependence rather than structural contagion, and that it is overwhelmingly an equity phenomenon---international-equity pairs supply the volatility-bias-sensitive increases, while the cross-asset hedges remain genuinely resilient. The experienced breakdown is real; its source is heteroskedasticity, not a regime shift in dependence.

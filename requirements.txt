@@ -1,0 +1,31 @@
+# Data and numerical computing
+duckdb>=1.1
+pandas>=2.2
+numpy>=2.0
+pyarrow>=16.0
+scipy>=1.13
+
+# Data access and statistical modeling
+yfinance>=0.2
+statsmodels>=0.14
+
+# Visualization and dashboard
+matplotlib>=3.9
+seaborn>=0.13
+plotnine>=0.13
+plotly>=5.24
+streamlit>=1.37
+
+# Notebooks
+jupyter>=1.1
+ipykernel>=6.29
+ipython>=8.0
+
+# Presentation utilities
+pillow>=10.0
+python-pptx>=1.0
+lxml>=5.0
+
+# Development and testing
+pytest>=8.3
+ruff>=0.7

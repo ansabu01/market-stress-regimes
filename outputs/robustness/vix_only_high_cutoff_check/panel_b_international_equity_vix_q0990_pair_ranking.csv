@@ -1,0 +1,16 @@
+label_source,vix_quantile,universe,method,asset_i,asset_j,corr_calm,corr_stress,delta_corr,interpretation
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EWU,EWJ,0.6794091625411712,0.857867532451469,0.17845836991029773,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EWG,EWJ,0.6903582212496074,0.855650703150068,0.16529248190046053,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,SPY,EWJ,0.7115684774379408,0.8656192193001128,0.15405074186217194,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EEM,EWJ,0.7019825479379106,0.8433931074146519,0.1414105594767413,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EEM,EWU,0.7825532510625559,0.9059576251676387,0.12340437410508276,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,SPY,EWU,0.7958401806169801,0.9079009065210675,0.11206072590408733,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EEM,EWG,0.773704470873059,0.8837998611869603,0.11009539031390125,Moderate breakdown
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,SPY,EWG,0.7952019606651567,0.8951218131399767,0.09991985247482005,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EFA,EWJ,0.8222454247109043,0.9201214489526918,0.09787602424178743,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,SPY,EEM,0.7912801629116225,0.8820465170831632,0.09076635417154066,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EWG,EWU,0.8469057388120897,0.9313704206261986,0.08446468181410882,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EFA,EEM,0.8480798800515531,0.9267955757830593,0.07871569573150616,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,SPY,EFA,0.8608626839400416,0.9347717529436327,0.07390906900359107,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EFA,EWU,0.9181354406501108,0.9721741170073208,0.05403867635721005,Small increase
+vix_quotes.close_trailing_252d_quantile,0.99,panel_b_international_equity,pearson,EFA,EWG,0.9262796624597135,0.9575237294656348,0.031244067005921305,Small increase

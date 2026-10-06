@@ -1,0 +1,76 @@
+% !TEX root = ../report.tex
+
+\section{Data}
+\label{sec:data}
+
+\subsection{Asset Universe and the Case for ETFs}
+\label{subsec:asset_universe}
+
+This study uses exchange-traded funds (ETFs) as investable proxies for broad market segments rather than constructing synthetic portfolios from individual securities.
+This choice is deliberate for three reasons. First, ETFs map into economically interpretable portfolio sleeves such as U.S. equities, Treasuries,
+investment-grade bonds, high-yield credit, gold, broad commodities, oil, and listed real estate because the selected products have explicitly stated benchmark indexes or investment
+objectives documented by their issuers \citep{ssga_spy_2026,ishares_shy_2026,ishares_tlt_2026,ishares_agg_2026,ishares_hyg_2026,ssga_gld_2026,invesco_dbc_2026,uscf_uso_2026,vanguard_vnq_2026}.
+Second, ETFs are directly tradable market vehicles: ETF shares trade intraday on exchanges at market-determined prices, while the creation-redemption mechanism and portfolio transparency help keep ETF
+prices linked to the value of the underlying holdings \citep{ici_etf_faq_2026,madhavan2016exchange}. This makes the empirical design closer to the portfolio problem faced by investors who allocate across tradable market exposures.
+Third, a fixed ETF universe avoids the additional firm-level reconstruction and rebalancing choices that arise when researchers hand-assemble changing baskets of individual securities ex post.
+At the same time, this design does \emph{not} fully eliminate product-level survivorship concerns, because the selected ETFs are surviving vehicles observed through the sample end.
+Survivorship bias is a known issue in empirical performance studies because excluding disappeared funds or securities can bias measured performance and risk characteristics \citep{brown1992survivorship,elton1996survivorship}.
+
+The analysis is conducted on two panels. The first panel is the main \emph{cross-asset} universe and is designed to span the canonical building blocks of a diversified portfolio. The second panel is an \emph{international equity} universe and is designed to examine whether geographic equity diversification remains effective once market stress emerges.
+
+\paragraph{Panel A: Cross-asset universe.}
+The cross-asset panel contains nine ETFs:
+\[
+\{\text{SPY, SHY, TLT, AGG, HYG, GLD, DBC, USO, VNQ}\}.
+\]
+The economic role of each ETF is summarized in Appendix Table~\ref{tab:universe_panel_a}.
+
+The cross-asset panel is intentionally \emph{parsimonious rather than exhaustive}. The purpose is not to span every investable niche, but to cover the main dimensions along which diversification is usually justified in practice: equity risk, sovereign duration, aggregate fixed income, risky credit, precious metals, broad commodities, energy, and real estate. SPY provides broad U.S. equity exposure through the S\&P 500 Index \citep{ssga_spy_2026}; SHY and TLT span the short and long ends of the U.S. Treasury curve \citep{ishares_shy_2026,ishares_tlt_2026}; AGG captures the U.S. investment-grade aggregate bond market \citep{ishares_agg_2026}; HYG provides exposure to U.S. dollar-denominated high-yield corporate bonds \citep{ishares_hyg_2026}; GLD reflects the price of gold bullion less trust expenses \citep{ssga_gld_2026}; DBC is used as the broad-commodity sleeve \citep{invesco_dbc_2026}; USO is the dedicated crude-oil sleeve \citep{uscf_uso_2026}; and VNQ captures listed U.S. real-estate exposure \citep{vanguard_vnq_2026}. The resulting panel separates assets whose stress behavior should plausibly differ: Treasuries capture duration and potential flight-to-quality exposure, high-yield credit represents risky corporate claims, gold and commodities capture real-asset exposure, oil isolates energy-specific risk, and listed real estate combines property exposure with equity-market trading characteristics.
+
+\paragraph{Panel B: International equity universe.}
+The international equity panel contains six ETFs:
+\[
+\{\text{SPY, EEM, EWG, EWU, EWJ, EFA}\}.
+\]
+This panel combines one U.S. benchmark ETF (SPY), one broad developed-markets ex-U.S. ETF (EFA), one broad emerging-markets ETF (EEM), and three country ETFs for Germany (EWG), the United Kingdom (EWU), and Japan (EWJ). The logic is to move from \emph{cross-asset diversification} to \emph{geographic equity diversification}. SPY remains the U.S. equity benchmark \citep{ssga_spy_2026}; EFA tracks developed-market equities outside the United States and Canada \citep{ishares_efa_2026}; EEM tracks emerging-market equities \citep{ishares_eem_2026}; and EWG, EWU, and EWJ provide targeted exposure to German, U.K., and Japanese equities, respectively \citep{ishares_ewg_2026,ishares_ewu_2026,ishares_ewj_2026}. This allows the stress analysis to distinguish two related but conceptually different questions: whether international equities diversify U.S. equity exposure at all, and whether this geographic diversification survives once stress compresses global equity returns toward a common factor.
+
+Methodologically, this second panel is useful because it preserves a common asset class (equities) while varying the geographic source of risk. If correlations rise in Panel B as sharply as in Panel A, the interpretation is not a generic ``everything correlates in crises'' result, but a more specific finding that \emph{international equity diversification itself} becomes fragile in stress.
+
+\subsection{Sample Period and Data Sourcing}
+\label{subsec:sample_period}
+
+The empirical analysis is conducted at the \emph{daily} frequency. Throughout the project, prices are sourced from Yahoo Finance via the \texttt{yfinance} Python interface. The package documents daily data downloads through the \texttt{interval='1d'} argument and provides automatic price adjustment functionality through the \texttt{auto\_adjust} argument \citep{yfinance_download_2026}. In the project pipeline, Yahoo Finance is the source for ETF prices and VIX quotes, while the data are stored in the project database as daily adjusted-close observations (close levels for the VIX) before returns are constructed.
+
+A crucial design choice is the sample window. Because the main tests compare assets within a fixed universe and estimate regime-conditional correlation matrices and PCA concentration, they require a \emph{balanced} window in which the full universe is simultaneously observable: the balanced window is anchored at \textbf{11 April 2007}, the first trading day on which all ETFs are jointly available, with HYG as the latest-entering instrument \citep{ishares_hyg_2026}; the regime model itself is estimated on the full SPY history (Section~\ref{sec:methodology}). Estimating every regime-conditional matrix on the same trading days keeps the cross-regime comparison clean and, by avoiding pairwise deletion, yields an internally consistent positive-semidefinite matrix for the eigenvalue analysis \citep{lewis1995pairwise,jolliffe2002pca}. The descriptive tables, by contrast, report each ETF over its own longer availability window, so raw coverage is documented transparently while the main analysis prioritizes comparability and matrix coherence.
+
+All return calculations are based on split- and distribution-adjusted daily prices obtained from Yahoo Finance via \texttt{yfinance}. This adjustment is important because unadjusted closing prices omit distributions and corporate actions, which would mechanically understate investor-relevant returns for payout-heavy instruments such as bond ETFs, high-yield credit ETFs, and REIT ETFs. The adjusted-price approach therefore approximates total-return exposure more closely than a price-only return series. Because Yahoo Finance and \texttt{yfinance} provide adjusted data fields and automatic adjustment functionality, the empirical return construction uses adjusted prices before computing returns \citep{yfinance_download_2026}.
+
+\subsection{Return Construction}
+\label{subsec:return_construction}
+
+Let $P^{adj}_{i,t}$ denote the split- and distribution-adjusted daily price of ETF $i$ on trading day $t$. Daily ETF returns are computed as log returns:
+\begin{equation}
+r_{i,t} = \ln(P^{adj}_{i,t}) - \ln(P^{adj}_{i,t-1}).
+\label{eq:logreturns}
+\end{equation}
+
+The use of log returns is standard in financial econometrics and appropriate here for two reasons. First, log returns are \emph{time-additive}: the multi-period log return over a block of consecutive trading days is the sum of the corresponding daily log returns. This is convenient for regime-based work because returns can be aggregated consistently from daily observations. Second, for small daily price changes, log returns are numerically close to simple percentage returns, while providing a convenient continuously compounded return representation used widely in empirical asset-pricing and time-series applications \citep{campbell_lo_mackinlay_1997,tsay2010analysis}. Log returns are therefore used as the common return metric for all ETFs before the regime labels are merged into the return panel.
+
+The ordering of the data construction is important. The daily return series is computed \emph{after} price adjustment and \emph{before} regime labeling. In other words, the project first builds a clean daily ETF return panel and only then merges in the stress labels constructed elsewhere in the pipeline. This ordering separates measurement choices in the price series from the later regime-classification procedure.
+
+\subsection{Descriptive Statistics and Data Availability}
+\label{subsec:descriptive_statistics}
+
+The descriptive statistics serve two purposes. First, they document coverage by reporting each ETF's first available adjusted price observation and the corresponding number of daily observations. This is important because the main empirical analysis is conducted on a balanced panel starting only once all ETFs in the final universe are simultaneously observable. Second, they summarize the unconditional distribution of daily returns using annualized mean return, annualized volatility, skewness, and excess kurtosis. These moments are relevant for a stress-regime analysis because financial returns are well known to exhibit non-normal features such as asymmetry, volatility clustering, and fat tails \citep{fama1965behavior,cont2001empirical}. Reporting skewness and excess kurtosis therefore provides an initial diagnostic of the distributional properties that motivate the later regime-dependent analysis.
+
+Appendix Table~\ref{tab:availability} reports the asset-level coverage in the raw adjusted-price dataset. Importantly, this table is \emph{not} the balanced estimation window; it is a transparency table showing the underlying data availability by ETF. The descriptive moments are reported in Appendix Tables~\ref{tab:desc_panel_a}--\ref{tab:desc_panel_b} as annualized mean return, annualized volatility, skewness, and excess kurtosis.
+
+For the cross-asset panel, the moments show substantial heterogeneity in both average return and risk. SHY has by far the lowest annualized volatility, consistent with its role as a short-duration Treasury sleeve, whereas USO is the most volatile asset by a wide margin. AGG, HYG, and VNQ display particularly elevated excess kurtosis, indicating heavy tails, and the pronounced negative skewness in the panel sits in AGG and USO. HYG's full-sample skewness is, perhaps surprisingly, mildly positive: a handful of extreme crisis-rebound days (most notably $+11.6\%$ on 13 October 2008 and $+6.3\%$ on 9 April 2020) dominate the third moment, while outside those episodes high-yield returns are negatively skewed, consistent with the downside asymmetry of risky credit. Gold exhibits lower volatility than equities and commodities such as oil, but still materially non-Gaussian returns.
+
+For the international equity panel, all six equity proxies are considerably more volatile than core bond proxies and non-U.S. equities retain clear tail risk. EEM has the highest annualized volatility in the panel, while the developed-market country ETFs and EFA cluster somewhat below that level. Across the board, excess kurtosis remains well above zero, again indicating that the later stress-regime analysis should not be built on Gaussian intuition alone.
+
+Normal quantile--quantile plots for both panels are reported in Appendix~\ref{app:distributional} (Figures~\ref{fig:qq_panel_a} and~\ref{fig:qq_panel_b}); under approximate normality the points would lie on the Gaussian reference line \citep{wilk1968probability}. Consistent with the skewness and excess-kurtosis columns of Appendix Tables~\ref{tab:desc_panel_a}--\ref{tab:desc_panel_b}, the plots keep their central mass near the benchmark but show pronounced S-shaped tail departures---most severely for AGG, HYG, USO, and VNQ---confirming the fat-tailed, asymmetric returns that motivate the regime-based analysis \citep{fama1965behavior,cont2001empirical}.
+
+The descriptive statistics already point to strong cross-sectional heterogeneity in the return-generating process. Safe government-bond exposure (SHY) is characterized by low volatility, while oil (USO), listed real estate (VNQ), and emerging-market equities (EEM) are substantially more volatile. Several assets exhibit marked excess kurtosis and, in some cases, negative skewness, indicating that the relevant return distributions are asymmetric and heavy-tailed. These features motivate the later regime-based analysis of correlation structure under calm and stress states.
+
+In summary, the data design combines an economically interpretable ETF universe with daily adjusted prices and log-return construction. The descriptive evidence confirms that the selected assets differ strongly in volatility and tail behavior, which makes them suitable for evaluating whether diversification benefits persist or erode once market stress regimes are imposed.

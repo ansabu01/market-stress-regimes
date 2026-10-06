@@ -1,0 +1,4 @@
+universe,n_pairs,bootstrap_fdr_significant,fisher_unadjusted_significant,both,bootstrap_only,fisher_only,neither
+etf_assets,91,50,73,50,0,23,18
+panel_a_cross_asset,36,11,25,11,0,14,11
+panel_b_international_equity,15,15,15,15,0,0,0

@@ -1,0 +1,2 @@
+source_table,raw_rows,balanced_rows,balanced_start,balanced_end,calm_days,stress_days,stress_share
+etf_returns_monthly_markov_labeled,6518,4711,2007-04-12,2025-12-30,2443,2268,0.4814264487369985

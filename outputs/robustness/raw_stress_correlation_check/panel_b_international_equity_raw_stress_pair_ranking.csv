@@ -1,0 +1,16 @@
+label_source,universe,method,asset_i,asset_j,corr_calm,corr_stress,delta_corr,interpretation
+regime_labels.stress_raw,panel_b_international_equity,pearson,EWU,EWJ,0.6077801825804839,0.8453224896368919,0.237542307056408,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,SPY,EWJ,0.6501964380760035,0.8574233446163206,0.20722690654031717,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EEM,EWJ,0.6404624551822893,0.8434108141771155,0.20294835899482622,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EWG,EWJ,0.6344756241260114,0.8330793328651395,0.19860370873912803,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,SPY,EWU,0.7378161476782824,0.8938321300394646,0.1560159823611822,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EEM,EWU,0.7295703937791904,0.8826156337189104,0.15304523993971997,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EEM,EWG,0.7333825671834273,0.8615059423987516,0.12812337521532424,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EFA,EWJ,0.7876135885832031,0.9123060100916496,0.1246924215084465,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,SPY,EWG,0.7566565720321393,0.8774538273754485,0.1207972553433092,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,SPY,EEM,0.7496928938033101,0.8684476207510426,0.11875472694773259,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EWG,EWU,0.8108784493935903,0.9187714277013473,0.10789297830775701,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EFA,EEM,0.8129180760732689,0.9151590162555149,0.10224094018224594,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,SPY,EFA,0.8251155684455493,0.9260424887862889,0.10092692034073958,Moderate breakdown
+regime_labels.stress_raw,panel_b_international_equity,pearson,EFA,EWU,0.8940033037149321,0.9628717672843772,0.0688684635694451,Small increase
+regime_labels.stress_raw,panel_b_international_equity,pearson,EFA,EWG,0.9121904824011419,0.9544454989440195,0.042255016542877666,Small increase

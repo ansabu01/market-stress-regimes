@@ -1,0 +1,4 @@
+universe,label,assets,complete_case_days,calm_days,stress_days,stress_share
+panel_a_cross_asset,Panel A: cross-asset,9,4711,2443,2268,0.4814264487369985
+panel_b_international_equity,Panel B: international equity,6,4711,2443,2268,0.4814264487369985
+etf_assets,Combined ETF assets,14,4711,2443,2268,0.4814264487369985

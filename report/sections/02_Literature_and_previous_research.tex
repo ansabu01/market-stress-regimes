@@ -1,0 +1,51 @@
+\section{Literature and previous research}
+\label{sec:literature}
+
+The introduction has shown that portfolio diversification depends on the stability of the
+relationships between assets. However, empirical research indicates that correlations are
+not constant over time and may change substantially during periods of financial stress.
+An asset that appears to provide diversification under normal conditions may therefore
+behave differently when markets experience high volatility and falling prices.
+
+\citet{longin2001extreme} show that correlations between international equity markets
+increase particularly during severe downturns. \citet{angchen2002asymmetric} document a similar
+asymmetry for U.S. equity portfolios, where correlations are stronger after negative market
+movements than after positive movements of comparable size. These findings imply that
+unconditional correlations can understate the comovement investors face in adverse states.
+For a diversification analysis, it is therefore not enough to ask whether assets
+appear diversified on average. The relevant question is whether those relationships remain stable
+when markets are under stress.
+
+A defensible answer first requires a systematic definition of market stress. Historical crisis
+dates can be selected manually, but such choices are partly subjective and may bias the
+results. Markov-switching models offer a statistical alternative by allowing returns to move
+between latent states with different means and variances \citep{hamilton1989new}. This
+approach is well suited to financial markets because stress is usually characterized by high
+volatility, lower returns, and persistent regime dynamics. Prior work shows that such regimes
+matter for asset allocation because return distributions and dependence structures can differ
+substantially across states \citep{ang2002international,guidolin2007asset}.
+
+However, higher stress-period correlations must be interpreted carefully. \citet{forbesrigobon2002}
+show that correlations can increase mechanically when volatility rises, even if the underlying
+relationship between markets has not changed. They distinguish between contagion, meaning a
+genuine strengthening of linkages after a shock, and interdependence, meaning strong existing
+relationships observed in a more volatile environment. This distinction is central for our
+paper. Raw correlations describe the comovement that investors actually experience, while
+Forbes--Rigobon-adjusted correlations ask whether the increase remains after correcting for
+heteroskedasticity. A stress correlation increase can therefore signal a realized loss of
+diversification without necessarily proving structural contagion.
+
+Pairwise correlations also provide only a partial view of diversification. Even if some pairs
+remain stable, the portfolio as a whole may become more exposed to a common risk factor.
+Principal component analysis captures this broader concentration by measuring how much of
+total variation is explained by the leading components \citep{jolliffe2002pca}. A higher first
+principal-component share in stress means that returns are increasingly driven by one common
+direction, leaving fewer independent sources of risk. This idea is closely related to the
+systemic-risk literature: \citet{kritzman2011principal} interpret a rising concentration of
+variance in a few components as an absorption ratio, and \citet{billio2012econometric} show that
+financial-system connectedness tightens during crises.
+
+This study combines these strands of research in one empirical framework. It compares
+regime-conditional correlations for a cross-asset universe and an international equity universe,
+tests their sampling uncertainty, measures portfolio-level concentration with PCA, and applies the Forbes--Rigobon
+adjustment to distinguish volatility-driven comovement from stronger evidence of contagion.

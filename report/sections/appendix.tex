@@ -1,0 +1,589 @@
+% !TEX root = ../report.tex
+
+% =========================================================
+% Appendix: robustness and supplementary material.
+% Floats here were moved out of the body for the page budget;
+% the body text still references them by \label, so the
+% cross-references resolve to these appendix numbers.
+% =========================================================
+
+\section{Diversification in an Equal-Weighted Portfolio}
+\label{app:equal_weight_diversification}
+
+This appendix expands the portfolio-variance argument in
+Section~\ref{sec:introduction}. Consider the variance of a portfolio containing
+\(N\) risky assets:
+\begin{equation}
+\sigma_p^2
+=\sum_{n=1}^{N}\sum_{m=1}^{N}w_nw_m\sigma_{nm},
+\label{eq:appendix_general_portfolio_variance}
+\end{equation}
+where \(\sigma_{nn}=\sigma_n^2\) is the variance of asset \(n\), while
+\(\sigma_{nm}\) is the covariance between assets \(n\) and \(m\). The covariance
+matrix therefore contains \(N\) diagonal variance terms and \(N(N-1)\) ordered
+off-diagonal covariance terms. Because \(\sigma_{nm}=\sigma_{mn}\), the latter
+correspond to \(N(N-1)/2\) unique asset pairs, each appearing twice in
+Equation~\eqref{eq:appendix_general_portfolio_variance}.
+
+For an equally weighted portfolio, \(w_n=1/N\) for every asset. Separating the
+diagonal and off-diagonal terms gives
+\begin{align}
+\sigma_p^2
+&=\frac{1}{N^2}\sum_{n=1}^{N}\sigma_n^2
+  +\frac{1}{N^2}\sum_{n=1}^{N}\sum_{\substack{m=1\\m\ne n}}^{N}\sigma_{nm}.
+\label{eq:equal_weight_variance_split}
+\end{align}
+Define the average individual variance and average pairwise covariance as
+\begin{equation}
+\overline{\sigma^2}
+=\frac{1}{N}\sum_{n=1}^{N}\sigma_n^2,
+\qquad
+\overline{\sigma}_{\mathrm{cov}}
+=\frac{1}{N(N-1)}
+  \sum_{n=1}^{N}\sum_{\substack{m=1\\m\ne n}}^{N}\sigma_{nm}.
+\label{eq:average_variance_covariance}
+\end{equation}
+Substitution into Equation~\eqref{eq:equal_weight_variance_split} yields
+\begin{equation}
+\boxed{
+\sigma_p^2
+=\frac{1}{N}\,\overline{\sigma^2}+\left(1-\frac{1}{N}\right)
+\overline{\sigma}_{\mathrm{cov}}
+}.
+\label{eq:equal_weight_variance_decomposition}
+\end{equation}
+
+The scaling explains why adding assets diversifies idiosyncratic risk but does
+not automatically remove common risk. The \(N\) variance terms each receive a
+weight \(1/N^2\), so their combined coefficient is \(1/N\). By contrast, the
+\(N(N-1)\) ordered covariance terms have a combined coefficient
+\(1-1/N\). Provided the cross-sectional averages remain well behaved as the
+universe grows,
+\begin{equation}
+\lim_{N\to\infty}\sigma_p^2
+=\lim_{N\to\infty}\overline{\sigma}_{\mathrm{cov}}.
+\label{eq:equal_weight_variance_limit}
+\end{equation}
+Thus, the contribution of average individual variance vanishes asymptotically,
+whereas average covariance determines the remaining portfolio risk.
+
+The role of correlation is especially transparent when assets have a common
+variance \(\sigma^2\) and average pairwise correlation \(\overline{\rho}\).
+Because average covariance is then
+\(\overline{\sigma}_{\mathrm{cov}}=\overline{\rho}\sigma^2\),
+Equation~\eqref{eq:equal_weight_variance_decomposition} becomes
+\begin{equation}
+\sigma_p^2
+=\sigma^2\left[
+\frac{1}{N}
++\left(1-\frac{1}{N}\right)\overline{\rho}
+\right]
+\;\longrightarrow\;
+\overline{\rho}\sigma^2.
+\label{eq:equal_weight_common_correlation}
+\end{equation}
+Increasing \(N\) can therefore eliminate asset-specific variance, but it cannot
+eliminate a positive common dependence component. This is the mathematical
+motivation for examining whether average correlation and the broader dependence
+structure become stronger during market stress.
+
+\section{Asset Universe, Coverage, and Distributional Diagnostics}
+\label{app:distributional}
+
+This appendix collects the asset-universe description of Section~\ref{subsec:asset_universe}
+together with the data-availability table, descriptive return moments, and normal
+quantile--quantile plots referenced in Section~\ref{subsec:descriptive_statistics}.
+Table~\ref{tab:universe_panel_a} states the economic role of each cross-asset ETF; the
+coverage and descriptive tables document raw ETF availability and unconditional daily-return
+moments; and the figures show the S-shaped departures from the Gaussian benchmark that
+correspond to the skewness and excess-kurtosis columns of
+Tables~\ref{tab:desc_panel_a}--\ref{tab:desc_panel_b}.
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-asset universe and economic role}
+\label{tab:universe_panel_a}
+\begin{tabular}{p{1.6cm}p{4.0cm}p{8.0cm}}
+\toprule
+Ticker & Proxy & Role in the stress-diversification design \\
+\midrule
+SPY & U.S. large-cap equities & Baseline risky market portfolio and benchmark equity beta; tracks the S\&P 500. \\
+SHY & Short U.S. Treasuries & Cash-like, short-duration government bond sleeve; captures the defensive short end of the Treasury curve. \\
+TLT & Long U.S. Treasuries & Long-duration government bond sleeve; captures duration risk and the classic flight-to-quality hedge channel. \\
+AGG & U.S. aggregate bonds & Broad investment-grade fixed-income market; benchmark for core bond exposure. \\
+HYG & U.S. high-yield credit & Risky corporate credit; sits between equities and safer bonds and is especially useful in stress episodes. \\
+GLD & Gold & Precious-metals safe-haven sleeve and classic crisis diversifier candidate. \\
+DBC & Broad commodities & Diversified commodity basket; captures inflation- and real-asset exposure beyond precious metals. \\
+USO & Crude oil & Concentrated energy exposure; useful because oil often behaves differently from both broad commodities and financial assets in stress episodes. \\
+VNQ & Listed U.S. real estate & Equity-like real-asset sleeve; allows the analysis to distinguish listed property risk from broad equity beta. \\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{table}[htbp]
+\centering
+\caption{Asset-level data availability in the raw daily ETF dataset}
+\label{tab:availability}
+% Table body generated by notebooks/01_data_description.ipynb -- do not edit by hand.
+\input{../outputs/01_descriptive_data/appendix_availability_tabular}
+\end{table}
+\begin{table}[htbp]
+\centering
+\caption{Descriptive statistics of daily log returns for the cross-asset panel, each ETF over its full availability window ($N$ counts daily returns)}
+\label{tab:desc_panel_a}
+% Table body generated by notebooks/01_data_description.ipynb -- do not edit by hand.
+\input{../outputs/01_descriptive_data/appendix_desc_panel_a_tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Descriptive statistics of daily log returns for the international equity panel, each ETF over its full availability window ($N$ counts daily returns)}
+\label{tab:desc_panel_b}
+% Table body generated by notebooks/01_data_description.ipynb -- do not edit by hand.
+\input{../outputs/01_descriptive_data/appendix_desc_panel_b_tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{qq_plots_panel_a.png}
+\caption{Normal Q--Q plots for daily log returns in Panel A. The dashed line represents the Gaussian benchmark. Systematic departures in the tails indicate that observed ETF return quantiles are more extreme than the corresponding normal quantiles.}
+\label{fig:qq_panel_a}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{qq_plots_panel_b.png}
+\caption{Normal Q--Q plots for daily log returns in Panel B. The repeated S-shaped deviations from the Gaussian benchmark indicate non-normal tail behavior across the international equity ETFs.}
+\label{fig:qq_panel_b}
+\end{figure}
+
+\section{Regime-Definition Robustness}
+\label{app:regime_robustness}
+
+This appendix collects the robustness material supporting the regime definition of
+Section~\ref{subsec:regime_definition}: the model-selection comparison, the agreement
+between the two independent stress labels, the weekly Markov re-estimation, and the
+optimizer-initialization check.
+
+\begin{table}[htbp]
+\centering
+\caption{Model selection for the monthly Markov-switching model. Lower BIC is preferred; the chosen specification is in bold.}
+\label{tab:markov_selection}
+\begin{tabular}{llrrr}
+\toprule
+States & Switching parameters & Log-likelihood & AIC & BIC \\
+\midrule
+$2$ & \textbf{mean and variance (official)} & $-870.6$ & $1753.2$ & $\mathbf{1775.6}$ \\
+$2$ & variance only & $-874.5$ & $1758.9$ & $1777.6$ \\
+$2$ & mean only     & $-886.0$ & $1782.0$ & $1800.7$ \\
+$3$ & mean and variance & $-855.9$ & $1735.8$ & $1780.7$ \\
+$3$ & variance only     & $-872.4$ & $1764.8$ & $1802.2$ \\
+\bottomrule
+\end{tabular}
+\\[0.4em]
+{\footnotesize The three-state specifications did not converge to a stable optimum and are reported for completeness only.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Agreement between the Markov stress label and the rule-based VIX-plus-drawdown label, measured by Cohen's $\kappa$. The last row compares the weekly and monthly Markov labels with each other.}
+\label{tab:markov_agreement}
+\begin{tabular}{llrr}
+\toprule
+Comparison & Frequency / threshold & Agreement & Cohen's $\kappa$ \\
+\midrule
+Markov vs.\ rule-based      & Monthly, $0.50$ & $65.1\%$ & $0.26$ \\
+Markov vs.\ rule-based      & Monthly, $0.75$ & $71.3\%$ & $0.31$ \\
+Markov vs.\ rule-based      & Weekly, $0.50$  & $83.9\%$ & $0.52$ \\
+Markov vs.\ rule-based      & Weekly, $0.75$  & $86.4\%$ & $0.54$ \\
+Weekly vs.\ monthly Markov  & $0.50$          & $75.4\%$ & $0.49$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{markov_regime_monthly.png}
+\caption{Monthly Markov-switching SPY regime. Top: SPY (log scale) with the identified stress months shaded. Middle: smoothed stress probability with the $0.5$ and $0.75$ classification thresholds. Bottom: regime ``swim-lanes'' comparing the monthly Markov stress label against the rule-based VIX-plus-drawdown label and the weekly Markov label.}
+\label{fig:markov_monthly}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{markov_regime_weekly.png}
+\caption{Weekly Markov-switching SPY regime (robustness check), in the same layout as Figure~\ref{fig:markov_monthly}. The weekly model flags fewer periods as stress and tracks the rule-based label more closely, while still identifying the same crisis episodes.}
+\label{fig:markov_weekly}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Optimizer-initialization robustness of the monthly Markov-switching model. The official model is re-estimated with additional EM warm-up iterations and twenty random starting-value searches (\texttt{em\_iter}{=}20, \texttt{search\_reps}{=}20, \texttt{search\_iter}{=}10, \texttt{maxiter}{=}1000) and compared with the default fit. The two fits are numerically indistinguishable.}
+\label{tab:markov_initialization}
+\begin{tabular}{lrr}
+\toprule
+Quantity & Default (official) & Robust search \\
+\midrule
+Log-likelihood              & $-870.6$ & $-870.6$ \\
+AIC                         & $1753.1$ & $1753.1$ \\
+BIC                         & $1775.6$ & $1775.6$ \\
+Stress-state variance       & $31.93$  & $31.93$ \\
+Calm-state variance         & $5.67$   & $5.67$ \\
+Stress persistence $p_{ss}$ & $0.939$  & $0.939$ \\
+Stress share ($\ge 0.5$)    & $0.473$  & $0.473$ \\
+\bottomrule
+\end{tabular}
+\\[0.4em]
+{\footnotesize Smoothed stress-probability paths correlate at $\rho \approx 1.00$; the $0.5$ stress labels agree in all $311$ months.}
+\end{table}
+
+\section{Regime-Conditional Correlations: Supplementary Material}
+\label{app:raw_corr}
+
+This appendix collects the supporting material for the regime-conditional correlations of
+Section~\ref{subsec:results_raw_corr}: the stress-minus-calm difference heatmaps, the
+calm-versus-stress scatter plots, the largest pairwise changes, the
+descriptive-class counts, and the descriptive stress-episode split of selected hedge
+correlations. All quantities are raw Pearson correlations
+(Equation~\eqref{eq:regime_corr}) on the common balanced window.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.32\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_a_cross_asset_stress_minus_calm_heatmap.png}
+  \caption{Panel A: cross-asset.}
+  \label{fig:heatmap_a}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_b_international_equity_stress_minus_calm_heatmap.png}
+  \caption{Panel B: international equity.}
+  \label{fig:heatmap_b}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{etf_assets_stress_minus_calm_heatmap.png}
+  \caption{Combined ETF universe.}
+  \label{fig:heatmap_etf}
+\end{subfigure}
+\caption{Stress-minus-calm correlation difference matrices $\Delta\rho_{ij}$ by universe. Warm cells mark pairs that tighten in stress and cool cells mark pairs that decouple. Panel~B is uniformly warm; Panel~A shows the reshuffle---a warm risk-on (equity--real-estate--commodity) block and a cool safe-haven (Treasury--gold) block.}
+\label{fig:corr_heatmaps_app}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.32\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_a_cross_asset_calm_vs_stress_scatter.png}
+  \caption{Panel A: cross-asset.}
+  \label{fig:scatter_a}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_b_international_equity_calm_vs_stress_scatter.png}
+  \caption{Panel B: international equity.}
+  \label{fig:scatter_b}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.32\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{etf_assets_calm_vs_stress_scatter.png}
+  \caption{Combined ETF universe.}
+  \label{fig:scatter_etf}
+\end{subfigure}
+\caption{Calm (horizontal) versus stress (vertical) pairwise correlation by universe. Points above the $45^{\circ}$ line tighten in stress; points below it decouple. Panel~B lies entirely above the line, while Panel~A splits across it.}
+\label{fig:corr_scatter_app}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Largest pairwise correlation changes by universe (raw Pearson, common balanced window). Each block lists the most extreme stress-minus-calm changes; Panel~B has no pair whose correlation decreases, so its smallest increases are shown instead. Complete rankings for all $36$, $15$, and $91$ pairs are in the project outputs (\texttt{*\_pair\_ranking.csv}).}
+\label{tab:raw_pairs_app}
+\begin{tabular}{lccc}
+\toprule
+Pair & $\rho^{\mathrm{calm}}$ & $\rho^{\mathrm{stress}}$ & $\Delta\rho$ \\
+\midrule
+\multicolumn{4}{l}{\textit{Panel A: cross-asset --- largest increases}}\\
+DBC--VNQ & $0.108$ & $0.341$  & $+0.233$ \\
+USO--VNQ & $0.067$ & $0.298$  & $+0.231$ \\
+SPY--VNQ & $0.585$ & $0.795$  & $+0.210$ \\
+SPY--DBC & $0.294$ & $0.468$  & $+0.174$ \\
+SPY--USO & $0.247$ & $0.419$  & $+0.172$ \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Panel A: cross-asset --- largest decreases}}\\
+TLT--VNQ & $0.123$ & $-0.252$ & $-0.374$ \\
+SHY--VNQ & $0.108$ & $-0.198$ & $-0.306$ \\
+AGG--VNQ & $0.240$ & $-0.037$ & $-0.277$ \\
+TLT--AGG & $0.877$ & $0.647$  & $-0.230$ \\
+SHY--AGG & $0.752$ & $0.538$  & $-0.214$ \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Panel B: international equity --- largest increases}}\\
+EEM--EWJ & $0.596$ & $0.802$ & $+0.206$ \\
+EWU--EWJ & $0.605$ & $0.800$ & $+0.195$ \\
+EWG--EWJ & $0.613$ & $0.797$ & $+0.184$ \\
+SPY--EWJ & $0.657$ & $0.816$ & $+0.160$ \\
+SPY--EWU & $0.718$ & $0.868$ & $+0.150$ \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Panel B: international equity --- smallest increases (no decreases)}}\\
+EFA--EWG & $0.912$ & $0.949$ & $+0.038$ \\
+EFA--EWU & $0.908$ & $0.948$ & $+0.041$ \\
+EWG--EWU & $0.812$ & $0.896$ & $+0.084$ \\
+SPY--EFA & $0.810$ & $0.909$ & $+0.099$ \\
+EFA--EEM & $0.799$ & $0.900$ & $+0.101$ \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Combined ETF universe --- largest increases}}\\
+VNQ--EWU & $0.479$ & $0.714$ & $+0.234$ \\
+DBC--VNQ & $0.108$ & $0.341$ & $+0.233$ \\
+USO--VNQ & $0.067$ & $0.298$ & $+0.231$ \\
+VNQ--EEM & $0.487$ & $0.715$ & $+0.228$ \\
+VNQ--EWG & $0.464$ & $0.686$ & $+0.222$ \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Combined ETF universe --- largest decreases}}\\
+TLT--VNQ & $0.123$ & $-0.252$ & $-0.374$ \\
+SHY--VNQ & $0.108$ & $-0.198$ & $-0.306$ \\
+AGG--VNQ & $0.240$ & $-0.037$ & $-0.277$ \\
+TLT--AGG & $0.877$ & $0.647$  & $-0.230$ \\
+SHY--AGG & $0.752$ & $0.538$  & $-0.214$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Descriptive-class counts of the pairwise correlation change by universe, on the common balanced window. \emph{Resilient} pairs decouple in stress ($\Delta\rho < 0$); \emph{small increase} pairs rise but stay below the $0.10$ breakdown threshold; \emph{breakdown} pairs cross it ($\Delta\rho \ge 0.10$). Shares are of the universe's pair count.}
+\label{tab:interp_classes_app}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Universe & Resilient ($\Delta\rho<0$) & Small increase ($0$--$0.10$) & Breakdown ($\ge 0.10$) & Total \\
+\midrule
+Panel A: cross-asset         & $22$ ($61.1\%$) & $9$ ($25.0\%$)  & $5$ ($13.9\%$)  & $36$ \\
+Panel B: international equity & $0$ ($0.0\%$)   & $4$ ($26.7\%$)  & $11$ ($73.3\%$) & $15$ \\
+Combined ETF universe        & $38$ ($41.8\%$) & $22$ ($24.2\%$) & $31$ ($34.1\%$) & $91$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Stress-episode heterogeneity of selected hedge correlations. Correlations are computed only on Markov-stress days within each broad era, using the same common balanced return window as the main analysis. The pooled-stress row corresponds to the static stress-regime estimate used in the body. The split is descriptive and is not used for formal inference.}
+\label{tab:stress_episode_hedges}
+\resizebox{\textwidth}{!}{%
+% Table body generated by notebooks/03_correlation_raw_full_pipeline.ipynb -- do not edit by hand.
+\input{../outputs/tables/stress_episode_hedge_correlations}%
+}
+\\[0.4em]
+{\footnotesize ``Share'' is the era's share of the $2{,}268$ Markov-stress days in the balanced window. The 2024--2025 period contains only $42$ stress days ($1.9\%$ of stress days), below the $100$-day reporting threshold, and is omitted. The full per-era, per-pair tables and the heterogeneity ranking are exported by notebook~03 to \texttt{outputs/tables/}.}
+\end{table}
+
+\section{Bootstrap Inference: Supplementary Material}
+\label{app:bootstrap}
+
+This appendix collects the supporting material for the bootstrap inference of
+Section~\ref{subsec:results_bootstrap}: the bootstrap sampling distributions of the
+universe averages, the full set of pairwise confidence intervals for the top and tail
+pairs, the inferential detail for the most extreme pairs, the block-length sensitivity
+check, and the comparison with the classical Fisher-$z$ test. Unless noted, results use
+$B = 2{,}000$ circular moving-block replicates with block length $L = 21$ days
+(Section~\ref{subsec:bootstrap_inference}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{bootstrap_average_delta_distributions.png}
+\caption{Bootstrap sampling distributions of the universe-average correlation change $\overline{\Delta\rho}$, one panel per universe. The dashed line marks the no-change value of zero and the solid line the observed point estimate. Only the international-equity distribution is cleanly separated from zero; the cross-asset and combined distributions straddle it, the visual counterpart of the insignificant averages in Table~\ref{tab:bootstrap_summary}.}
+\label{fig:bootstrap_dist_app}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{pairwise_delta_ci.png}
+\caption{Pairwise stress-minus-calm correlation changes with $95\%$ moving-block bootstrap confidence intervals, for the largest-magnitude pairs in each universe (top and tail). Pairs whose interval excludes zero are significant increases (above zero) or decreases (below zero); intervals crossing zero are inconclusive. This is the pair-level detail behind the significance counts of Table~\ref{tab:bootstrap_summary}.}
+\label{fig:pairwise_ci_app}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Bootstrap inference for the most extreme pairs of the combined ETF universe (largest increases and largest decreases). $\Delta\rho$ is the raw change; the $95\%$ interval and two-sided $p$-value (Equation~\eqref{eq:boot_pvalue}) are from the moving-block bootstrap; $q_{\mathrm{BH}}$ is the Benjamini--Hochberg false-discovery-rate-adjusted value. All listed pairs are FDR-significant ($q_{\mathrm{BH}} < 0.05$).}
+\label{tab:bootstrap_pairs_app}
+\begin{tabular}{lcccc}
+\toprule
+Pair & $\Delta\rho$ & $95\%$ CI & $p_{\mathrm{boot}}$ & $q_{\mathrm{BH}}$ \\
+\midrule
+\multicolumn{5}{l}{\textit{Largest increases}}\\
+VNQ--EWU & $+0.234$ & $[+0.150,\,+0.315]$ & $<0.001$ & $0.002$ \\
+DBC--VNQ & $+0.233$ & $[+0.124,\,+0.329]$ & $<0.001$ & $0.002$ \\
+USO--VNQ & $+0.231$ & $[+0.110,\,+0.343]$ & $<0.001$ & $0.002$ \\
+VNQ--EEM & $+0.228$ & $[+0.153,\,+0.300]$ & $<0.001$ & $0.002$ \\
+VNQ--EWG & $+0.222$ & $[+0.139,\,+0.299]$ & $<0.001$ & $0.002$ \\
+VNQ--EWJ & $+0.221$ & $[+0.139,\,+0.294]$ & $<0.001$ & $0.002$ \\
+VNQ--EFA & $+0.210$ & $[+0.138,\,+0.281]$ & $<0.001$ & $0.002$ \\
+SPY--VNQ & $+0.210$ & $[+0.148,\,+0.275]$ & $<0.001$ & $0.002$ \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Largest decreases}}\\
+TLT--VNQ & $-0.374$ & $[-0.475,\,-0.267]$ & $<0.001$ & $0.002$ \\
+SHY--VNQ & $-0.306$ & $[-0.431,\,-0.179]$ & $<0.001$ & $0.002$ \\
+AGG--VNQ & $-0.277$ & $[-0.395,\,-0.147]$ & $<0.001$ & $0.002$ \\
+TLT--AGG & $-0.230$ & $[-0.358,\,-0.090]$ & $<0.001$ & $0.002$ \\
+SHY--AGG & $-0.214$ & $[-0.370,\,-0.045]$ & $0.004$  & $0.010$ \\
+TLT--EEM & $-0.199$ & $[-0.300,\,-0.101]$ & $<0.001$ & $0.002$ \\
+TLT--HYG & $-0.176$ & $[-0.299,\,-0.050]$ & $0.008$  & $0.018$ \\
+SHY--EEM & $-0.172$ & $[-0.301,\,-0.042]$ & $0.007$  & $0.016$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{block_length_sensitivity.png}
+\caption{Block-length sensitivity of the universe-average correlation change. Point estimates are invariant to the block length; the $95\%$ intervals widen as the block lengthens from $5$ to $63$ days, the expected effect of acknowledging more serial dependence. The international-equity average stays significant at every block length.}
+\label{fig:block_sensitivity_app}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Block-length sensitivity of the universe-average correlation change. Point estimates do not depend on the block length $L$; the $95\%$ bootstrap interval widens with $L$, and the FDR-significant pair count falls. The $L=21$ row is the primary specification (Table~\ref{tab:bootstrap_summary}); the $L \in \{5,63\}$ rows use $500$ replicates.}
+\label{tab:block_sensitivity_app}
+\begin{tabular}{lcccc}
+\toprule
+Universe & $L$ & $\overline{\Delta\rho}$ & $95\%$ CI & FDR-sig.\ pairs \\
+\midrule
+\multirow{3}{*}{Panel A: cross-asset} & $5$  & $-0.025$ & $[-0.056,\,+0.010]$ & $12$ \\
+                                       & $21$ & $-0.025$ & $[-0.066,\,+0.019]$ & $11$ \\
+                                       & $63$ & $-0.025$ & $[-0.074,\,+0.031]$ & $9$  \\
+\addlinespace
+\multirow{3}{*}{Panel B: international equity} & $5$  & $+0.124$ & $[+0.095,\,+0.152]$ & $15$ \\
+                                               & $21$ & $+0.124$ & $[+0.084,\,+0.157]$ & $15$ \\
+                                               & $63$ & $+0.124$ & $[+0.069,\,+0.160]$ & $15$ \\
+\addlinespace
+\multirow{3}{*}{Combined ETF universe} & $5$  & $+0.029$ & $[-0.006,\,+0.060]$ & $54$ \\
+                                        & $21$ & $+0.029$ & $[-0.012,\,+0.068]$ & $50$ \\
+                                        & $63$ & $+0.029$ & $[-0.013,\,+0.071]$ & $40$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{bootstrap_vs_fisher.png}
+\caption{Block-bootstrap versus classical Fisher-$z$ evidence against the null of no correlation change, one point per pair (plotted as $-\log_{10} p$). Points below the $45^{\circ}$ line are pairs the bootstrap finds less significant than Fisher-$z$. The systematic shift quantifies the over-rejection induced by the i.i.d.\ Gaussian assumption on serially dependent daily returns.}
+\label{fig:bootstrap_fisher_app}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Agreement between the block-bootstrap (FDR-controlled, $q<0.05$) and the unadjusted classical Fisher-$z$ test in declaring a pair's correlation change significant, by universe. ``Both'' counts pairs significant under both; ``Fisher only'' counts pairs significant under Fisher-$z$ but not the bootstrap. No pair is significant under the bootstrap alone.}
+\label{tab:fisher_compare_app}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Universe & Pairs & Bootstrap (FDR) & Fisher-$z$ & Both & Bootstrap only & Fisher only & Neither \\
+\midrule
+Panel A: cross-asset         & $36$ & $11$ & $25$ & $11$ & $0$ & $14$ & $11$ \\
+Panel B: international equity & $15$ & $15$ & $15$ & $15$ & $0$ & $0$  & $0$  \\
+Combined ETF universe        & $91$ & $50$ & $73$ & $50$ & $0$ & $23$ & $18$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+\section{Principal-Component Concentration: Supplementary Figures}
+\label{app:pca}
+
+This appendix collects the supporting figures for the principal-component concentration of
+Section~\ref{subsec:results_pca}. Figure~\ref{fig:pca_quadrant} places each universe in the
+$(\Delta\,\mathrm{pc1\_share},\,\Delta N_{\mathrm{eff}})$ plane; all three lie in the
+upper-left ``more concentrated in stress'' region (a higher leading-component share together
+with fewer effective bets). Figures~\ref{fig:pca_scree}--\ref{fig:pca_cumulative} report the
+full eigenvalue spectra and cumulative explained-variance curves by regime for each panel.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{concentration_delta_quadrant.png}
+\caption{Stress-minus-calm change in the leading-component share ($x$-axis) against the change in the effective number of bets ($y$-axis), one marker per universe. All three universes sit in the upper-left region---$\mathrm{pc1\_share}$ rises and $N_{\mathrm{eff}}$ falls---confirming the concentration verdict of Table~\ref{tab:pca_concentration}.}
+\label{fig:pca_quadrant}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Panel B (international equity) principal-component concentration: common balanced window (used in the body) versus the full sample. Panel B is the only universe the common-window restriction shortens; it contains no asset with a 2007 inception, so it can in principle start in 2003. The concentration verdict---a higher $\mathrm{pc1\_share}$ and a lower $N_{\mathrm{eff}}$ in stress---holds on both windows, so the body's harmonization to the common window is innocuous for the conclusion.}
+\label{tab:pca_panelb_robustness}
+\begin{tabular}{lccccc}
+\toprule
+ & & \multicolumn{2}{c}{$\mathrm{pc1\_share}$} & \multicolumn{2}{c}{$N_{\mathrm{eff}}$} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Window & Obs.\ (calm/stress) & Calm & Stress & Calm & Stress \\
+\midrule
+Common ($2007$--$2025$, body) & $2{,}443\,/\,2{,}268$ & $0.787$ & $0.889$ & $1.58$ & $1.26$ \\
+Full sample ($2003$--$2025$)  & $3{,}436\,/\,2{,}279$ & $0.779$ & $0.888$ & $1.62$ & $1.26$ \\
+\bottomrule
+\end{tabular}
+\\[0.4em]
+{\footnotesize Both windows satisfy the verdict ($\mathrm{pc1\_share}^{\mathrm{stress}} > \mathrm{pc1\_share}^{\mathrm{calm}}$ and $N_{\mathrm{eff}}^{\mathrm{stress}} < N_{\mathrm{eff}}^{\mathrm{calm}}$). Restricting Panel B to the common window drops roughly a thousand mostly-calm $2003$--$2007$ trading days, which is why its calm $\mathrm{pc1\_share}$ rises slightly while the stress figures are essentially unchanged.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_a_cross_asset_scree.png}
+  \caption{Panel A: cross-asset.}
+  \label{fig:scree_a}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_b_international_equity_scree.png}
+  \caption{Panel B: international equity.}
+  \label{fig:scree_b}
+\end{subfigure}
+\caption{Scree plots of the regime-conditional correlation eigenvalues, calm versus stress. In stress the leading eigenvalue rises and the spectrum steepens---variance reallocates into the first component---most starkly for the international-equity panel.}
+\label{fig:pca_scree}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_a_cross_asset_cumulative_explained_variance.png}
+  \caption{Panel A: cross-asset.}
+  \label{fig:cumvar_a}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{panel_b_international_equity_cumulative_explained_variance.png}
+  \caption{Panel B: international equity.}
+  \label{fig:cumvar_b}
+\end{subfigure}
+\caption{Cumulative explained-variance curves by regime. The stress curve lies above the calm curve at the first component for both panels, the cumulative-share statement of the rising leading-component concentration.}
+\label{fig:pca_cumulative}
+\end{figure}
+
+\section{Forbes--Rigobon Robustness Variants}
+\label{app:fr_variants}
+
+The body reports the main \texttt{market\_spy} adjustment and the class counts for the
+conservative \texttt{pair\_max} variant (Table~\ref{tab:fr_classification}). Table~\ref{tab:fr_pairmax}
+adds the full \texttt{pair\_max} distribution---average \emph{and} median raw and adjusted
+changes---for each universe. The pattern is the same everywhere: a positive (or near-zero) raw
+stress-minus-calm change becomes a negative adjusted change once each pair is deflated by the
+larger of its two asset variance shocks, and not a single pair survives as a robust breakdown.
+
+\begin{table}[htbp]
+\centering
+\caption{Forbes--Rigobon \texttt{pair\_max} variant: distribution of raw and adjusted stress-minus-calm correlation changes by universe, on the common balanced window. $\Delta\rho$ is the raw change and $\tilde\Delta\rho$ the change after deflating the stress correlation by $\max(\delta_i,\delta_j)$. ``Robust'' counts pairs with both $\Delta\rho\ge0.10$ and $\tilde\Delta\rho\ge0.10$.}
+\label{tab:fr_pairmax}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & & \multicolumn{2}{c}{$\Delta\rho$} & \multicolumn{2}{c}{$\tilde\Delta\rho$} & \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Universe & Pairs & Mean & Median & Mean & Median & Robust \\
+\midrule
+Panel A: cross-asset         & $36$ & $-0.025$ & $-0.024$ & $-0.097$ & $-0.084$ & $0$ \\
+Panel B: international equity & $15$ & $+0.124$ & $+0.125$ & $-0.068$ & $-0.072$ & $0$ \\
+Combined ETF                 & $91$ & $+0.029$ & $+0.050$ & $-0.080$ & $-0.068$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{table}

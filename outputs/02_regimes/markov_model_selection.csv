@@ -1,0 +1,6 @@
+specification,k,n_params,logLik,AIC,BIC,converged
+"k=2, switch mean + variance (OFFICIAL)",2,6,-870.573,1753.1461,1775.5848,True
+"k=2, switch variance only",2,5,-874.4675,1758.935,1777.6339,True
+"k=3, switch mean + variance",3,12,-855.8776,1735.7553,1780.6328,False
+"k=2, switch mean only",2,5,-885.9816,1781.9632,1800.6622,True
+"k=3, switch variance only",3,10,-872.3927,1764.7855,1802.1834,True

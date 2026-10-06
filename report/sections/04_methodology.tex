@@ -1,0 +1,209 @@
+% !TEX root = ../report.tex
+
+\section{Methodology}
+\label{sec:methodology}
+
+This section defines the binary market state---\emph{calm} versus \emph{stress}---on which the rest of the analysis conditions. Because any single stress definition embeds discretionary choices, we use two complementary definitions and verify that they agree: a transparent, rule-based label built from the VIX and the S\&P~500 drawdown, and a data-driven Markov-switching model estimated on S\&P~500 returns. The rule-based label is easy to interpret but relies on fixed thresholds; the Markov-switching model instead lets the data themselves separate a low-volatility from a high-volatility regime. Throughout, the S\&P~500 is proxied by the SPY ETF, using the split- and distribution-adjusted prices defined in Section~\ref{sec:data}.
+
+\subsection{Regime Definition}
+\label{subsec:regime_definition}
+
+\paragraph{Baseline rule-based stress label.}
+The first definition is a simple, transparent rule that flags a trading day as ``stress'' when two conditions hold simultaneously: implied volatility is unusually high, and the equity market is in a meaningful drawdown. Implied volatility is measured by the VIX, the CBOE index of S\&P~500 option-implied volatility, which is widely interpreted as a forward-looking ``fear gauge'' of expected near-term market turbulence \citep{whaley2009understanding}. To avoid a fixed cut-off that would be sensitive to the secular level of volatility, we compare the VIX to its own recent history: a day is classified as elevated when the VIX exceeds the trailing 75th percentile of its previous 252 trading days (approximately one year). Let $V_t$ denote the closing VIX level and $Q^{0.75}_{t}$ the 75th percentile of $\{V_{t-252}, \dots, V_{t-1}\}$.
+
+The second condition requires a material equity drawdown. Let $P^{\mathrm{SPY}}_t$ be the adjusted SPY closing price and let $M_t = \max_{t-251 \le s \le t} P^{\mathrm{SPY}}_s$ be its trailing one-year (252-day) running maximum. The drawdown is
+\begin{equation}
+D_t = \frac{M_t - P^{\mathrm{SPY}}_t}{M_t},
+\label{eq:drawdown}
+\end{equation}
+that is, the fractional decline from the recent peak. A day is labelled \emph{stress} when both conditions hold:
+\begin{equation}
+\mathrm{stress}_t = \mathbf{1}\!\left[\, V_t > Q^{0.75}_{t} \,\right]\cdot \mathbf{1}\!\left[\, D_t > 0.05 \,\right].
+\label{eq:rule_stress}
+\end{equation}
+Requiring both an above-normal VIX \emph{and} a drawdown exceeding 5\% prevents the label from firing on volatility spikes that are not accompanied by falling prices, or on slow declines without elevated implied volatility. Over the sample this rule classifies roughly 16\% of trading days as stress. As a robustness variant we also compute the same label after smoothing the VIX with a 21-day moving average, which removes single-day spikes; the two rule-based labels are very close. This label is deliberately simple and interpretable, but the 75th-percentile and 5\% thresholds are discretionary, which motivates the complementary model-based definition.
+
+\paragraph{Official Markov-switching model.}
+The second, and primary, regime definition replaces fixed thresholds with a statistical model that infers the regime directly from the return data. We use a two-state Markov-switching model in the tradition of \citet{hamilton1989new}, estimated on \emph{monthly} SPY log returns. Monthly frequency is the standard choice for return-based regime models in the asset-allocation literature \citep{ang2002international,guidolin2007asset}: it averages out daily microstructure noise while leaving enough observations to estimate the regimes precisely (here $n = 311$ months, February 2000--December 2025).
+
+Let $r_t$ denote the monthly SPY log return (expressed in percent), and let $S_t \in \{0,1\}$ be a latent state that follows a first-order Markov chain with transition probabilities
+\begin{equation}
+p_{ij} = \Pr\!\left(S_t = j \mid S_{t-1} = i\right), \qquad i,j \in \{0,1\}.
+\label{eq:transition}
+\end{equation}
+Conditional on the state, returns are Gaussian with a state-specific mean and variance:
+\begin{equation}
+r_t \mid (S_t = s) \;\sim\; \mathcal{N}\!\left(\mu_s,\; \sigma_s^2\right), \qquad s \in \{0,1\}.
+\label{eq:ms_model}
+\end{equation}
+Both the mean $\mu_s$ and the variance $\sigma_s^2$ are allowed to switch across states, and the parameters $\{\mu_0,\mu_1,\sigma_0^2,\sigma_1^2,p_{00},p_{11}\}$ are estimated by maximum likelihood \citep{hamilton1989new}. To date the regimes we use the \emph{smoothed} state probabilities $\Pr(S_t = s \mid r_1, \dots, r_T)$, which condition on the full sample and are the appropriate object for ex-post regime identification \citep{kim1994dynamic,kim1999statespace}; they describe the historical record rather than provide a real-time forecast.
+
+The two states are not labelled a priori. We identify the \emph{stress} state as the one with the higher fitted variance, following the standard interpretation of the high-volatility regime as the crisis state \citep{ang2002international,guidolin2007asset}. A period is then assigned to the stress regime using the textbook maximum-probability rule, i.e.\ when its smoothed stress probability is at least $0.5$ \citep{hamilton1989new,kim1999statespace}; we additionally retain a stricter $0.75$ label as a high-confidence variant.
+
+Figure~\ref{fig:markov_chain} visualizes the fitted Markov chain that underlies this classification. Each month occupies one of the two latent states---a calm, low-volatility state and a stress, high-volatility state---and the transition probabilities govern whether the process persists in its current state or switches in the following month. Both fitted regimes are strongly persistent, with self-transition probabilities above $0.93$ and implied average durations of roughly 16--17 months, so the model produces gradual, economically interpretable regime shifts rather than frequent flickering. The stress state carries a monthly volatility more than twice that of the calm state together with a slightly negative average return, the pattern one expects of a crisis regime. Table~\ref{tab:markov_params} reports the same fitted state statistics numerically.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{markov_chain_diagram.png}
+\caption{Fitted two-state monthly Markov-switching chain for SPY log returns (2000--2025). Each node is a latent state---a calm, low-volatility state and a stress, high-volatility state. The self-loops report the persistence (self-transition) probabilities $p_{cc}$ and $p_{ss}$, and the connecting arrows the switching probabilities $p_{cs}$ (calm-to-stress) and $p_{sc}$ (stress-to-calm); the matrix $P$ collects the four probabilities (rows: from state, columns: to state). Below each node are the state-specific mean $\mu$ and volatility $\sigma$ (both in \% per month) and the expected duration $E[D]=1/(1-p_{ii})$. Stress is identified ex post as the higher-variance state; the subscripts $c$ and $s$ denote the calm and stress states.}
+\label{fig:markov_chain}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Fitted two-state monthly Markov-switching model for SPY returns (2000--2025, $n=311$). The stress state is the higher-variance state. Returns are monthly log returns in percent.}
+\label{tab:markov_params}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+State & Mean (\%/month) & Std.\ dev.\ (\%/month) & Persistence $p_{ii}$ & Expected duration (months) \\
+\midrule
+Calm (state 0)   & $1.44$  & $2.38$ & $0.941$ & $17.0$ \\
+Stress (state 1) & $-0.14$ & $5.65$ & $0.939$ & $16.5$ \\
+\bottomrule
+\end{tabular}%
+}
+\\[0.4em]
+{\footnotesize Log-likelihood $=-870.6$; AIC $=1753.2$; BIC $=1775.6$. Stress is identified as the higher-variance state.}
+\end{table}
+
+The fitted model isolates every major episode in the sample---the dot-com unwind, the 2008 global financial crisis, the 2011 euro-area stress, the late-2018 selloff, the 2020 COVID-19 crash, and the 2022 rate-hike drawdown---without being told about any of them in advance. The full monthly regime path---SPY with the identified stress months shaded, the smoothed stress probability against the $0.5$ and $0.75$ thresholds, and a swim-lane comparison of the monthly Markov label with the rule-based and weekly Markov labels---is shown in Appendix Figure~\ref{fig:markov_monthly}.
+
+\paragraph{Specification choice.}
+The choice of two states, and of switching \emph{both} the mean and the variance, is not imposed but selected by information criteria. Table~\ref{tab:markov_selection}, reported in Appendix~\ref{app:regime_robustness}, compares the official specification against natural alternatives. The two-state model that switches both the mean and the variance attains the lowest BIC \citep{schwarz1978estimating}, beating the variance-only and mean-only two-state specifications. The three-state models achieve a lower in-sample AIC, but they fail to converge to a stable optimum, and BIC---which penalizes additional parameters more heavily---selects the parsimonious two-state model. We therefore adopt the two-state, mean-and-variance-switching specification, which is both well identified and economically interpretable.
+
+\paragraph{Robustness and agreement of the two definitions.}
+We assess the regime definition along three dimensions. First, \emph{threshold sensitivity}: tightening the probability cut-off from $0.5$ to $0.75$ reduces the share of months classified as stress from about 47\% to 40\%, without changing the timing of the episodes. Second, \emph{sampling frequency}: re-estimating the identical model on weekly returns ($n = 1{,}356$ weeks, taken on the last trading day of each week) yields a sharper regime that flags about 26\% of weeks as stress and isolates the same crises, confirming that the regime is not an artifact of monthly sampling (Figure~\ref{fig:markov_weekly}, Appendix~\ref{app:regime_robustness}). Third, and most importantly, \emph{agreement between the two independent definitions}: we compare the model-based and rule-based stress labels on overlapping dates and summarize their agreement with Cohen's $\kappa$ \citep{cohen1960coefficient}, which corrects the raw agreement rate for the fact that stress is rare---two labels can coincide simply by both calling most periods ``calm''. Table~\ref{tab:markov_agreement}, in the same appendix, reports the results. The rule-based and Markov labels agree well beyond chance, and the agreement is strongest at the weekly frequency ($\kappa \approx 0.52$, ``moderate'' on the scale of \citet{landis1977measurement}), where the model's stress share is closest to that of the rule. The weekly and monthly Markov labels themselves agree at $\kappa \approx 0.49$. That two methodologically unrelated definitions---one a fixed rule on the VIX and drawdowns, the other an unsupervised model on returns---independently identify the same stress episodes is the central validation of the regime definition used in the remainder of the paper.
+
+\paragraph{Estimation robustness.}
+A model-based regime is only credible if its fitted parameters represent a genuine likelihood optimum rather than an artifact of the optimizer's starting values; because the Markov-switching likelihood is multimodal, this is a real concern. We therefore re-estimate the official specification with a substantially more aggressive initialization---additional EM warm-up iterations together with twenty random starting-value searches (\texttt{em\_iter}{=}20, \texttt{search\_reps}{=}20)---and compare it against the default fit. Table~\ref{tab:markov_initialization}, in Appendix~\ref{app:regime_robustness}, shows the two fits to be numerically indistinguishable: the log-likelihood, information criteria, state variances, transition probabilities, and stress share are unchanged to three significant figures, and the smoothed stress-probability paths correlate at $\rho \approx 1.00$, assigning the identical $0.5$ stress label in every month of the sample. The regime dating is therefore not an artifact of estimation initialization.
+
+In summary, the analysis conditions on a stress regime that is defined in two complementary ways and validated by their agreement. The official label is the monthly two-state Markov-switching model, with stress identified as the high-variance state and assigned by the maximum-probability rule; the rule-based VIX-plus-drawdown label and the weekly Markov model serve as transparent and frequency-based robustness checks.
+
+\subsection{Regime-Conditional Correlations}
+\label{subsec:regime_correlations}
+
+The first and most direct question is whether assets that appear to diversify one another in calm markets continue to do so under stress. We answer it with regime-conditional pairwise correlations, which require no distributional assumptions beyond the existence of second moments: they summarize the comovement a portfolio holder actually experienced in each state. Each trading day $t$ inherits the binary stress label of its month from the monthly Markov-switching model of Section~\ref{subsec:regime_definition}; let $m_t \in \{0,1\}$ denote this daily indicator, with $m_t = 1$ in stress and $m_t = 0$ in calm.
+
+For each unique unordered pair of assets $(i,j)$ with $i<j$ we estimate the Pearson correlation of daily log returns separately within each regime,
+\begin{equation}
+\rho^{\mathrm{calm}}_{ij} = \operatorname{corr}\!\left(r_{i,t},\, r_{j,t} \,\middle|\, m_t = 0\right),
+\qquad
+\rho^{\mathrm{stress}}_{ij} = \operatorname{corr}\!\left(r_{i,t},\, r_{j,t} \,\middle|\, m_t = 1\right),
+\label{eq:regime_corr}
+\end{equation}
+where $r_{i,t}$ is the daily log return of Equation~\eqref{eq:logreturns}. The central object of interest is the change in correlation across regimes,
+\begin{equation}
+\Delta\rho_{ij} = \rho^{\mathrm{stress}}_{ij} - \rho^{\mathrm{calm}}_{ij},
+\label{eq:corr_delta}
+\end{equation}
+which we refer to as the \emph{breakdown} of a pair: a large positive $\Delta\rho_{ij}$ means the two assets move together far more tightly in stress than in calm, eroding exactly the diversification that justified holding them jointly. Ranking pairs by $\Delta\rho_{ij}$ isolates the relationships that fail when diversification is most needed.
+
+To summarize dependence at the portfolio level rather than pair by pair, we report, for each regime $g \in \{\mathrm{calm}, \mathrm{stress}\}$, the average, median, and the $10$th and $90$th percentiles of the set of unique pairwise correlations $\{\rho^{g}_{ij}\}$ across the $N(N-1)/2$ pairs of the panel. Comparing these distributions between regimes shows whether the whole dependence structure shifts upward in stress or whether the move is concentrated in a few pairs.
+
+A measurement caveat governs the sample used for every quantity. Portfolio-level aggregates---the average pairwise correlation, and the concentration measures of Section~\ref{subsec:pca_concentration}---are computed on the \emph{balanced} return panel that starts on \mbox{12 April 2007}, one trading day after the last-entering asset's first price observation on 11 April (Section~\ref{subsec:sample_period}). Every asset therefore contributes the same return dates and the resulting correlation matrix is internally consistent and positive semidefinite, which matters for the later eigenvalue analysis \citep{lewis1995pairwise,jolliffe2002pca}. The international-equity panel (Panel B) contains no asset with a 2007 inception and could in principle begin earlier; we hold it to the same common window so the cross-panel comparison is on identical days, and verify in Appendix~\ref{app:pca} that its full 2003--2025 sample delivers the same concentration verdict. Pair-level quantities in Equations~\eqref{eq:regime_corr}--\eqref{eq:corr_delta} are deliberately estimated on this same shared calendar rather than on each pair's maximal available history. They are therefore directly comparable across panels, but conditional on the availability window of the combined universe. These raw correlations are the benchmark against which the variance-adjusted measure of Section~\ref{subsec:forbes_rigobon} is compared.
+
+\subsection{Bootstrap Inference for Correlation Changes}
+\label{subsec:bootstrap_inference}
+
+The regime-conditional changes $\Delta\rho_{ij}$ of Equation~\eqref{eq:corr_delta} are point estimates; deciding whether a given change is distinguishable from zero requires its sampling distribution. Two features of the data make textbook inference for a correlation difference inappropriate. First, daily returns are serially dependent---volatility clusters, so adjacent days are not independent draws \citep{cont2001empirical}---which violates the i.i.d.\ assumption behind the classical Fisher-$z$ test. Second, the calm and stress samples are not two independent random samples but the regime-sorted subsequences of a single time series. We therefore base inference on a \emph{moving-block bootstrap}, the standard resampling scheme for dependent data \citep{efron1979bootstrap,kunsch1989,lahiri2003resampling}.
+
+For each universe we resample the full chronologically ordered daily panel using a \emph{circular} moving-block bootstrap \citep{politisromano1992circular}. Block starting points are drawn uniformly and blocks of $L$ genuinely consecutive trading-day rows are concatenated, wrapping only at the end of the complete sample. Each row carries both the full return vector and its observed regime label. We split a replicate into calm and stress only after resampling, so blocks preserve real temporal adjacency and regime durations while the calm/stress counts are allowed to vary across replicates. Crucially, \emph{whole cross-sectional rows} are resampled together, preserving contemporaneous dependence among all assets. We set the block length to $L = 21$ trading days---roughly one trading month---to retain short-run autocorrelation and volatility clustering, and assess sensitivity to $L \in \{5, 21, 63\}$ in Appendix~\ref{app:bootstrap}. Each of $B = 2{,}000$ replicates $b$ yields a full set of resampled changes $\Delta\rho_{ij}^{(b)}$.
+
+We summarize the bootstrap distribution of each $\Delta\rho_{ij}$ by a percentile $95\%$ confidence interval---its $2.5$th and $97.5$th sample quantiles---and use the centered bootstrap errors for an approximate two-sided test of $H_0:\Delta\rho_{ij}=0$,
+\begin{equation}
+p_{ij}
+=
+\frac{
+1 + \#\left\{\,b:
+\left|\Delta\rho_{ij}^{(b)}-\widehat{\Delta\rho}_{ij}\right|
+\geq
+\left|\widehat{\Delta\rho}_{ij}\right|
+\,\right\}
+}{B+1},
+\label{eq:boot_pvalue}
+\end{equation}
+with the $(\cdot + 1)/(B + 1)$ continuity correction of \citet{davisonhinkley1997}; the smallest attainable value is therefore $1/(B + 1) \approx 0.0005$. A pair is a \emph{significant increase} (\emph{decrease}) when its $95\%$ interval lies entirely above (below) zero. Because each universe tests many pairs at once---$36$, $15$, and $91$ in Panel~A, Panel~B, and the combined universe---we control the false discovery rate within each universe at $q < 0.05$ using the \citet{benjaminihochberg1995} procedure, and report FDR-significant counts alongside the raw $95\%$ counts.
+
+As a deliberately permissive benchmark we also report the classical Fisher-$z$ two-sample correlation test \citep{fisher1921probable}, which treats the two regime correlations as independent estimates from i.i.d.\ Gaussian samples. The contrast is itself informative: where the block bootstrap is markedly more conservative than Fisher-$z$, the gap measures the over-rejection induced by ignoring serial dependence.
+
+One limitation remains important. Regime labels travel with the resampled rows, so the bootstrap preserves their observed local timing but treats the estimated Markov classification of Section~\ref{subsec:regime_definition} as data. It does not refit the Markov model inside every replicate and therefore does not propagate model or classification uncertainty. The reported intervals remain conditional on the fitted regime definition.
+
+\subsection{Forbes--Rigobon Variance Adjustment}
+\label{subsec:forbes_rigobon}
+
+The regime-conditional correlations of Section~\ref{subsec:regime_correlations} answer what a holder experienced, but they cannot by themselves say \emph{why} correlations rose. \citet{forbesrigobon2002} show that a measured correlation mechanically increases when the variance of the common driving factor increases, even if the underlying linear relationship between two assets is unchanged. Because stress periods are by construction high-variance, part---or all---of the observed correlation rise can be this volatility bias rather than a genuine tightening of dependence. The concern is acute in our design because the stress regime is itself identified by high volatility: \citet{boyer1999pitfalls} show that correlations estimated on subsamples sorted on volatility differ mechanically from the full-sample value even when the underlying dependence is constant, so regime-conditional correlations are precisely the setting in which this correction is required. The Forbes--Rigobon adjustment therefore answers a distinct question from Section~\ref{subsec:regime_correlations}: did the dependence relationship itself change, or is the stress correlation rise a mechanical consequence of inflated variance? This distinction concerns the \emph{source} of the breakdown, not whether it occurs. The raw correlations remain the comovement an investor actually holds in either case, so a volatility-driven verdict identifies \emph{interdependence}---heightened comovement in a more volatile state---rather than \emph{contagion}---a structural shift in the dependence relationship---without implying that realized diversification was preserved. The adjustment thus diagnoses the mechanism behind the experienced breakdown; it does not undo it.
+
+We implement the adjustment through a per-asset variance shock. For asset $i$, let
+\begin{equation}
+\phi_i = \frac{\operatorname{Var}\!\left(r_{i,t} \mid m_t = 1\right)}{\operatorname{Var}\!\left(r_{i,t} \mid m_t = 0\right)}
+\label{eq:var_ratio}
+\end{equation}
+be the ratio of stress to calm return variance, and define the (non-negative) variance shock
+\begin{equation}
+\delta_i = \max\!\left(\phi_i - 1,\; 0\right).
+\label{eq:fr_delta}
+\end{equation}
+Following \citet{forbesrigobon2002}, the stress correlation of a pair is then deflated for the excess variance carried by the common factor,
+\begin{equation}
+\tilde{\rho}^{\mathrm{stress}}_{ij}
+= \frac{\rho^{\mathrm{stress}}_{ij}}
+{\sqrt{\,1 + \delta_{ij}\left(1 - \big(\rho^{\mathrm{stress}}_{ij}\big)^{2}\right)\,}},
+\label{eq:fr_adjustment}
+\end{equation}
+where $\delta_{ij}$ is the variance shock attributed to the pair (specified by the variant below). The adjusted breakdown is the analogue of Equation~\eqref{eq:corr_delta} using the corrected stress correlation,
+\begin{equation}
+\tilde{\Delta}\rho_{ij} = \tilde{\rho}^{\mathrm{stress}}_{ij} - \rho^{\mathrm{calm}}_{ij}.
+\label{eq:fr_delta_corr}
+\end{equation}
+
+The correction is not free. Equation~\eqref{eq:fr_adjustment} is exact only under the Forbes--Rigobon assumptions: returns are driven by a single common factor, and the regime shift changes \emph{only} the variance of that factor, with no contemporaneous shift in fundamentals, in the factor loadings, or in the variance of the idiosyncratic shocks. If those structural objects also move between calm and stress, the adjustment over- or under-corrects. We state this assumption explicitly because it is the price the Forbes--Rigobon measure pays for separating genuine contagion from mechanical variance inflation, and naming it is what keeps the comparison with the raw correlations honest.
+
+We report two variants that differ only in how the pair-level shock $\delta_{ij}$ in Equation~\eqref{eq:fr_adjustment} is chosen:
+\begin{itemize}
+  \item \textbf{\texttt{market\_spy}} (main): $\delta_{ij} = \delta_{\mathrm{SPY}}$ for every pair, using SPY's stress-versus-calm variance shock as the single common market shock. This is the specification most faithful to the single-factor logic of \citet{forbesrigobon2002} and is the one carried in the body.
+  \item \textbf{\texttt{pair\_max}} (conservative): $\delta_{ij} = \max(\delta_i, \delta_j)$, the larger of the two assets' own variance shocks. By deflating with the bigger shock it removes the most volatility bias and is the most demanding robustness check. Treating an asset's own variance shock as the common-factor shock is a deliberately conservative heuristic extension of the single-factor logic of \citet{forbesrigobon2002}, not the classical adjustment; this is why \texttt{market\_spy} is the main specification and \texttt{pair\_max} only a stress test.
+\end{itemize}
+Because the adjustment attributes the shock to a single designated source market, which asset plays that role is in principle directional; \citet{forbesrigobon2002} fix it by naming the crisis-origin market, and we make SPY that source throughout, so we do not report a separate per-asset (\emph{directed}) split.
+
+Combining the raw breakdown of Equation~\eqref{eq:corr_delta} with the adjusted breakdown of Equation~\eqref{eq:fr_delta_corr} classifies each pair into the four-class fragility taxonomy defined in Section~\ref{subsec:fragility_taxonomy}.
+
+The Forbes--Rigobon adjustment is treated as a primary result rather than a caveat: as the Results section shows, it materially reshapes the headline, because much of the apparently dramatic stress-period breakdown turns out to be volatility-driven rather than a genuine change in dependence. Presenting the raw and adjusted measures side by side is therefore central to the paper's contribution, not a footnote to it.
+
+\subsection{Principal-Component Concentration}
+\label{subsec:pca_concentration}
+
+The pairwise measures of Sections~\ref{subsec:regime_correlations}--\ref{subsec:forbes_rigobon} describe how individual relationships behave; they do not say how many genuinely independent sources of risk a portfolio retains. We answer that with a principal-component analysis of the regime-conditional correlation matrix, following \citet{jolliffe2002pca}. The eigendecomposition is performed on the \emph{raw} correlation matrix of Equation~\eqref{eq:regime_corr}, not on the Forbes--Rigobon--adjusted matrix of Section~\ref{subsec:forbes_rigobon}; the concentration measures therefore describe the dependence structure as realized, consistent with the raw correlations.
+
+Let $R^{g}$ denote the $N \times N$ correlation matrix estimated within regime $g \in \{\mathrm{full}, \mathrm{calm}, \mathrm{stress}\}$ on the balanced panel, with eigenvalues $\lambda^{g}_1 \ge \lambda^{g}_2 \ge \dots \ge \lambda^{g}_N \ge 0$. Because $R^{g}$ is a correlation matrix, $\sum_{k=1}^{N} \lambda^{g}_k = N$. The share of total variance captured by the leading component and by the leading $k$ components are
+\begin{equation}
+\mathrm{pc1\_share}^{g} = \frac{\lambda^{g}_1}{N},
+\qquad
+\mathrm{top}k\text{\_}\mathrm{share}^{g} = \frac{1}{N}\sum_{l=1}^{k} \lambda^{g}_l,
+\quad k \in \{3,5\}.
+\label{eq:pc_shares}
+\end{equation}
+A high $\mathrm{pc1\_share}$ means a single common direction---typically a market factor---explains most of the joint variation, leaving little room for independent diversifying exposures.
+
+To make ``how many independent bets'' precise we use the effective number of bets, defined through the participation ratio of the eigenvalue spectrum \citep{meucci2009},
+\begin{equation}
+N_{\mathrm{eff}}^{g}
+= \frac{\left(\sum_{k=1}^{N} \lambda^{g}_k\right)^{2}}{\sum_{k=1}^{N} \big(\lambda^{g}_k\big)^{2}}
+= \frac{N^{2}}{\sum_{k=1}^{N} \big(\lambda^{g}_k\big)^{2}}.
+\label{eq:effective_bets}
+\end{equation}
+$N_{\mathrm{eff}}^{g}$ equals $N$ when all eigenvalues are equal (every direction contributes equally, maximal diversification) and falls toward $1$ as the spectrum concentrates into a single dominant component. We summarize the regime comparison with a single verdict: a panel is \emph{more concentrated in stress} when $\mathrm{pc1\_share}^{\mathrm{stress}} > \mathrm{pc1\_share}^{\mathrm{calm}}$ and $N_{\mathrm{eff}}^{\mathrm{stress}} < N_{\mathrm{eff}}^{\mathrm{calm}}$, i.e.\ the leading factor grows and the effective number of bets shrinks at the same time.
+
+A rising $\mathrm{pc1\_share}$ together with a falling $N_{\mathrm{eff}}$ means that, precisely when stress arrives, the portfolio collapses onto fewer independent return directions, so its realized diversification weakens even if no single pairwise correlation looks alarming. This portfolio-level concentration is the bridge to the fragility taxonomy of Section~\ref{subsec:fragility_taxonomy}.
+
+\subsection{A Fragility Taxonomy}
+\label{subsec:fragility_taxonomy}
+
+The preceding measures combine into a simple taxonomy of how a relationship behaves under stress. Each pair is assigned to exactly one class from the joint behavior of its raw breakdown $\Delta\rho_{ij}$ (Equation~\eqref{eq:corr_delta}) and its variance-adjusted breakdown $\tilde{\Delta}\rho_{ij}$ (Equation~\eqref{eq:fr_delta_corr}), on a fixed breakdown threshold of $0.10$:
+\begin{description}
+  \item[Robust breakdown.] $\Delta\rho_{ij} \ge 0.10$ and $\tilde{\Delta}\rho_{ij} \ge 0.10$. The correlation rise survives the variance adjustment: a genuine loss of diversification in stress, the most fragile class.
+  \item[Volatility-bias-sensitive.] $\Delta\rho_{ij} \ge 0.10$ but $\tilde{\Delta}\rho_{ij} < 0.10$. The apparent breakdown is largely mechanical volatility inflation; the dependence relationship is more stable than the raw correlation suggests.
+  \item[Mostly resilient.] $0 \le \Delta\rho_{ij} < 0.10$. A small, non-negative raw rise below the threshold, with no material breakdown either before or after adjustment.
+  \item[Resilient (decreased).] $\Delta\rho_{ij} < 0$. The pair diversifies \emph{better} in stress, the opposite of fragility.
+\end{description}
+The four classes partition the pairs by raw breakdown---negative, below the threshold, or at least $0.10$---with the last band split by whether the rise survives adjustment, so every pair falls in exactly one class. Read together with the portfolio-level concentration of Section~\ref{subsec:pca_concentration}, this taxonomy distinguishes diversification that is genuinely lost in stress from diversification that only \emph{appears} to be lost because variance has risen---the central distinction the paper is built to make.

@@ -1,0 +1,9 @@
+model_frequency,defined_label,markov_label,agreement_rate,cohen_kappa,defined_stress_share,markov_stress_share
+M,stress_raw,ms_stress_50,0.6514,0.2556,0.1592,0.4534
+M,stress_raw,ms_stress_75,0.7127,0.3084,0.1592,0.3759
+M,stress_smooth_21d,ms_stress_50,0.6653,0.2858,0.1635,0.4534
+M,stress_smooth_21d,ms_stress_75,0.7214,0.3312,0.1635,0.3759
+W,stress_raw,ms_stress_50,0.839,0.5156,0.1592,0.2541
+W,stress_raw,ms_stress_75,0.864,0.5399,0.1592,0.2001
+W,stress_smooth_21d,ms_stress_50,0.8449,0.5363,0.1635,0.2541
+W,stress_smooth_21d,ms_stress_75,0.8696,0.5626,0.1635,0.2001

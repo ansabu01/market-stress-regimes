@@ -1,0 +1,39 @@
+% !TEX root = ../report.tex
+
+\section{Introduction}
+\label{sec:introduction}
+
+Diversification is one of the central principles of financial decision-making. An investor does not evaluate an asset only by its expected return or volatility, but also by how it moves relative to the other assets held alongside it. The insight formalized by \citet{markowitz1952portfolio} is simple but consequential: portfolio risk depends on the joint behavior of returns. Holding more assets is therefore not sufficient by itself; the benefit comes from combining exposures whose returns do not move together.
+
+Consider a portfolio of \(N\) risky assets with weights \(w_1,\ldots,w_N\), where \(\sum_{i=1}^{N} w_i=1\). Its return is the weighted sum of the individual asset returns:
+\begin{equation}
+R_{p,t}=\sum_{i=1}^{N}w_iR_{i,t}=\mathbf{w}^{\top}\mathbf{R}_t,
+\label{eq:portfolio_return}
+\end{equation}
+and its expected return is
+\begin{equation}
+\mathbb{E}[R_{p,t}]
+=\sum_{i=1}^{N}w_i\mathbb{E}[R_{i,t}]
+=\mathbf{w}^{\top}\boldsymbol{\mu}.
+\label{eq:portfolio_expected_return}
+\end{equation}
+Expected portfolio return is therefore linear in the weights: each asset contributes in direct proportion to the amount invested in it.
+
+Portfolio risk is different. When risk is measured by return variance,
+\begin{align}
+\sigma_p^2
+&=\operatorname{Var}(R_{p,t})
+=\mathbf{w}^{\top}\boldsymbol{\Sigma}\mathbf{w} \notag\\
+&=\sum_{i=1}^{N}w_i^2\sigma_i^2
++2\sum_{i<j}w_iw_j\rho_{ij}\sigma_i\sigma_j,
+\label{eq:portfolio_variance}
+\end{align}
+where \(\sigma_i^2\) is the variance of asset \(i\) and \(\rho_{ij}\) is the correlation between assets \(i\) and \(j\). Risk is not a weighted average of individual volatilities. It also contains every pairwise interaction in the portfolio. As the number of assets grows, these covariance terms become increasingly important relative to any single variance. Appendix~\ref{app:equal_weight_diversification} makes this result explicit for an equally weighted \(1/N\) portfolio, a simple allocation rule whose empirical performance relative to optimized strategies is studied by \citet{demiguel2009optimal}. Two portfolios containing assets with similar standalone volatility can consequently have very different risk if their correlation structures differ.
+
+This distinction explains both the value and the fragility of diversification. Low or negative correlations allow losses in one exposure to be offset by different behavior elsewhere. Yet correlations are not fixed parameters. During market stress, common shocks, deleveraging, liquidity needs, and shifts in risk appetite can cause assets that appeared distinct in calm conditions to move together. A correlation matrix estimated over the full sample may then describe neither calm nor crisis particularly well: it averages across environments in which the economic relationships between assets can differ. The problem is especially important because diversification is most valuable precisely when aggregate losses are large.
+
+The project therefore focuses on the stability of dependence rather than on forecasting returns or constructing an optimal allocation. It studies 14 exchange-traded funds spanning equities, government and corporate bonds, commodities, gold, oil, and real estate. The assets form two complementary perspectives: a cross-asset panel asks whether different sources of market exposure remain distinct under stress, while an international-equity panel asks whether geographic diversification survives when global equity markets fall together.
+
+The central research question is: \emph{How does the dependence structure across major asset classes and international equity markets change between calm and stress regimes?} Answering it requires more than observing that a sample correlation is higher in one period. Estimated changes may reflect sampling uncertainty, may be concentrated in only a few pairs, or may arise mechanically because volatility is higher in stress. Moreover, a collection of pairwise estimates can miss a broader collapse toward one dominant market factor. The purpose of the analysis is therefore diagnostic: to determine where diversification weakens, whether the change is statistically credible, whether market-wide dependence becomes more concentrated, and how much of the apparent breakdown remains after accounting for stress-period volatility.
+
+By separating calm and stress conditions, the study provides a clearer account of when apparently different assets continue to offer distinct risk exposures and when they cease to do so. This matters even without implementing a portfolio strategy, because any use of historical covariance estimates rests on an assumption about how stable those relationships will remain when market conditions change.

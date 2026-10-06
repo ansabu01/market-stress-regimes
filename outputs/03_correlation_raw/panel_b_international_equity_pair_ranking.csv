@@ -1,0 +1,16 @@
+universe,method,regime_calm,asset_i,asset_j,corr_calm,regime_stress,corr_stress,delta_corr,interpretation
+panel_b_international_equity,pearson,calm,EEM,EWJ,0.5957931547786071,stress,0.801634554140222,0.20584139936161494,Moderate breakdown
+panel_b_international_equity,pearson,calm,EWU,EWJ,0.6046147831175855,stress,0.7995037820237534,0.19488899890616784,Moderate breakdown
+panel_b_international_equity,pearson,calm,EWG,EWJ,0.613113677866968,stress,0.7972887686196295,0.18417509075266147,Moderate breakdown
+panel_b_international_equity,pearson,calm,SPY,EWJ,0.6565810825594771,stress,0.816401828160291,0.15982074560081394,Moderate breakdown
+panel_b_international_equity,pearson,calm,SPY,EWU,0.7175579582857999,stress,0.8675032051917735,0.14994524690597355,Moderate breakdown
+panel_b_international_equity,pearson,calm,EEM,EWG,0.7104506028614282,stress,0.841048563724021,0.1305979608625928,Moderate breakdown
+panel_b_international_equity,pearson,calm,EEM,EWU,0.7299770931135536,stress,0.8582629425646715,0.12828584945111787,Moderate breakdown
+panel_b_international_equity,pearson,calm,SPY,EWG,0.7302922345028334,stress,0.8549716254651335,0.12467939096230007,Moderate breakdown
+panel_b_international_equity,pearson,calm,SPY,EEM,0.731180206577872,stress,0.8541645975752598,0.12298439099738778,Moderate breakdown
+panel_b_international_equity,pearson,calm,EFA,EWJ,0.7854463108577509,stress,0.8892208853629913,0.10377457450524041,Moderate breakdown
+panel_b_international_equity,pearson,calm,EFA,EEM,0.7990068112578806,stress,0.9003682500951439,0.10136143883726323,Moderate breakdown
+panel_b_international_equity,pearson,calm,SPY,EFA,0.8101975037372352,stress,0.9090009621160807,0.09880345837884552,Small increase
+panel_b_international_equity,pearson,calm,EWG,EWU,0.811925563959322,stress,0.8958225912909565,0.08389702733163451,Small increase
+panel_b_international_equity,pearson,calm,EFA,EWU,0.9079401728864841,stress,0.9484306086174344,0.04049043573095035,Small increase
+panel_b_international_equity,pearson,calm,EFA,EWG,0.911939780105757,stress,0.9494242460898052,0.0374844659840482,Small increase

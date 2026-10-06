@@ -1,0 +1,9 @@
+interpretation,n_pairs,universe,share
+Correlation decreased,22,panel_a_cross_asset,0.611
+Small increase,9,panel_a_cross_asset,0.25
+Moderate breakdown,5,panel_a_cross_asset,0.139
+Moderate breakdown,11,panel_b_international_equity,0.733
+Small increase,4,panel_b_international_equity,0.267
+Correlation decreased,38,etf_assets,0.418
+Moderate breakdown,31,etf_assets,0.341
+Small increase,22,etf_assets,0.242
